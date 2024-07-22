@@ -41,7 +41,7 @@
         <hr/>
 
         <div class="add-author">
-            <button class="add">+</button>
+            <a href="./pages/addAuthor.php" class="add">+</a>
         </div>
 
     </div>

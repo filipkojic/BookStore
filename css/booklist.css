@@ -1,0 +1,99 @@
+body {
+    width: 60%;
+    margin: auto;
+}
+
+#head1 {
+    text-align: center;
+}
+
+.container2 {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.book {
+    flex: 2;
+}
+
+.year {
+    flex: 1;
+    text-align: center;
+}
+
+.actions {
+    flex: 1;
+    text-align: right;
+}
+
+.book-list {
+    margin-top: 20px;
+}
+
+.book-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.book-details {
+    flex: 2;
+}
+
+.book-name {
+    display: block;
+    font-weight: bold;
+}
+
+.book-year {
+    display: block;
+    color: #777;
+    text-align: center;
+}
+
+.book-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.edit, .delete {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.edit:hover, .delete:hover {
+    background-color: #0056b3;
+}
+
+.add-book {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.add {
+    background-color: blue;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    line-height: 40px;
+}
+
+.add:hover {
+    background-color: #218838;
+}
