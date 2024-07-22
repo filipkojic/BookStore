@@ -3,8 +3,6 @@ $first_name_error = $last_name_error = "";
 $first_name = $last_name = "";
 $author_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Pretpostavimo da dobijamo trenutne vrednosti iz baze podataka
-// Ova sekcija treba da bude zamenjena pravim upitom u bazi podataka
 $current_author = [
     'first_name' => 'Pera',
     'last_name' => 'Peric'
