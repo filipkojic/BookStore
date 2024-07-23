@@ -71,6 +71,11 @@ body {
     gap: 10px;
 }
 
+.author-actions a{
+    text-decoration: none;
+}
+
+
 .edit, .delete {
     background-color: #007bff;
     color: #fff;
@@ -78,6 +83,9 @@ body {
     border-radius: 4px;
     padding: 5px 10px;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
 .edit:hover, .delete:hover {
@@ -114,4 +122,3 @@ body {
 .add:focus {
     outline: none;
 }
-

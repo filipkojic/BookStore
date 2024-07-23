@@ -1,8 +1,23 @@
 <?php
+session_start();
+
 $author_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$author_name = isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '';
+$author_name = '';
+
+foreach ($_SESSION['authors'] as $author) {
+    if ($author['id'] == $author_id) {
+        $author_name = htmlspecialchars($author['first_name'] . ' ' . $author['last_name']);
+        break;
+    }
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_delete'])) {
+    foreach ($_SESSION['authors'] as $key => $author) {
+        if ($author['id'] == $author_id) {
+            unset($_SESSION['authors'][$key]);
+            break;
+        }
+    }
 
     header("Location: ../index.php");
     exit();
@@ -28,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['confirm_delete'])) {
             <p>You are about to delete the author '<strong><?php echo $author_name; ?></strong>'. If you proceed with this action, the application will permanently delete all books related to this author.</p>
         </div>
         <div class="dialog-footer">
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $author_id . '&name=' . urlencode($author_name); ?>" method="POST">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) . '?id=' . $author_id; ?>" method="POST">
                 <button type="submit" name="confirm_delete" class="delete-button">Delete</button>
                 <button type="button" class="cancel-button" onclick="window.history.back();">Cancel</button>
             </form>

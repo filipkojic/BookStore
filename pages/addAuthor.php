@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['authors'])) {
+    $_SESSION['authors'] = [];
+}
+
 $first_name_error = $last_name_error = "";
 $first_name = $last_name = "";
 
@@ -17,6 +23,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $last_name_error = "* Last name must be less than 100 characters";
     } else {
         $last_name = htmlspecialchars($_POST["last_name"]);
+    }
+
+    if (empty($first_name_error) && empty($last_name_error)) {
+        $new_author_id = count($_SESSION['authors']) + 1;
+        $new_author = [
+            'id' => $new_author_id,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'book_count' => 0
+        ];
+        $_SESSION['authors'][] = $new_author;
+
+        header("Location: ../index.php");
+        exit();
     }
 }
 ?>

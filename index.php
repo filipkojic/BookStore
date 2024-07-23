@@ -1,4 +1,14 @@
-<?php include "./includes/data.php"; ?>
+<?php
+session_start();
+include "./includes/data.php";
+
+if (!isset($_SESSION['authors'])) {
+    $_SESSION['authors'] = $authors;
+}
+if (!isset($_SESSION['books'])) {
+    $_SESSION['books'] = $books;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +32,7 @@
     <hr/>
 
     <div class="author-list">
-        <?php foreach ($authors as $author): ?>
+        <?php foreach ($_SESSION['authors'] as $author): ?>
             <div class="author-item">
                 <img src="./images/default-avatar.jpg" alt="Avatar" class="avatar">
                 <div class="author-details">
@@ -32,8 +42,8 @@
                     <span class="book-count"><?= htmlspecialchars($author['book_count']) ?></span>
                 </div>
                 <div class="author-actions">
-                    <button class="edit">Edit</button>
-                    <button class="delete">Delete</button>
+                    <a href="./pages/editAuthor.php?id=<?= $author['id'] ?>" class="edit">Edit</a>
+                    <a href="./pages/deleteAuthor.php?id=<?= $author['id'] ?>" class="delete">Delete</a>
                 </div>
             </div>
         <?php endforeach; ?>
