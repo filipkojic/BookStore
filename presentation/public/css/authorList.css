@@ -18,7 +18,7 @@ body {
 }
 
 .books {
-    margin-right: 130px;
+    margin-right: 140px;
 }
 
 .actions {
@@ -63,7 +63,9 @@ body {
 }
 
 .book-count {
-    color: #777;
+    background-color: lightgrey;
+    padding: 5px;
+    border-radius: 3px;
 }
 
 .author-actions {

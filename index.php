@@ -1,59 +1,62 @@
 <?php
-session_start();
-include "./includes/data.php";
+require_once __DIR__ . '/utilities/SessionManager.php';
+require_once __DIR__ . '/presentation/controllers/AuthorController.php';
+require_once __DIR__ . '/presentation/controllers/BookController.php';
+require_once __DIR__ . '/data/repositories/SessionAuthorRepository.php';
+require_once __DIR__ . '/data/repositories/SessionBookRepository.php';
+require_once __DIR__ . '/business/services/AuthorService.php';
+require_once __DIR__ . '/business/services/BookService.php';
 
-if (!isset($_SESSION['authors'])) {
-    $_SESSION['authors'] = $authors;
+$session = SessionManager::getInstance();
+
+//session_start();
+//session_unset();
+//session_destroy();
+//session_start();
+
+$sessionManager = SessionManager::getInstance();
+$authorRepository = new SessionAuthorRepository($sessionManager);
+$bookRepository = new SessionBookRepository($sessionManager);
+
+$authorService = new AuthorService($authorRepository, $bookRepository);
+$bookService = new BookService($bookRepository, $authorRepository);
+
+$authorController = new AuthorController($authorService);
+$bookController = new BookController($bookService);
+
+
+$url = isset($_GET['url']) ? $_GET['url'] : 'authors';
+$urlParts = explode('/', $url);
+$page = $urlParts[0];
+$id = isset($urlParts[1]) ? $urlParts[1] : null;
+
+switch ($page) {
+    case 'authors':
+        $authorController->index();
+        break;
+    case 'addAuthor':
+        $authorController->create();
+        break;
+    case 'editAuthor':
+        $authorController->edit($id);
+        break;
+    case 'deleteAuthor':
+        $authorController->delete($id);
+        break;
+    case 'books':
+        $bookController->getBooksByAuthor($id);
+        break;
+    case 'addBook':
+        $bookController->create();
+        break;
+    case 'editBook':
+        $bookController->edit($id);
+        break;
+    case 'deleteBook':
+        $bookController->delete($id);
+        break;
+    default:
+        $authorController->index();
+        break;
 }
-if (!isset($_SESSION['books'])) {
-    $_SESSION['books'] = $books;
-}
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/authorList.css">
-</head>
-<body>
-
-<div class="container">
-
-    <h1 id="head1">Author list</h1>
-    <div class="container2">
-        <div class="author">Author</div>
-        <div class="books">Books</div>
-        <div class="actions">Actions</div>
-    </div>
-
-    <hr/>
-
-    <div class="author-list">
-        <?php foreach ($_SESSION['authors'] as $author): ?>
-            <div class="author-item">
-                <img src="./images/default-avatar.jpg" alt="Avatar" class="avatar">
-                <div class="author-details">
-                    <span class="name"><?= htmlspecialchars($author['first_name']) . ' ' . htmlspecialchars($author['last_name']) ?></span>
-                </div>
-                <div class="author-books">
-                    <span class="book-count"><?= htmlspecialchars($author['book_count']) ?></span>
-                </div>
-                <div class="author-actions">
-                    <a href="./pages/editAuthor.php?id=<?= $author['id'] ?>" class="edit">Edit</a>
-                    <a href="./pages/deleteAuthor.php?id=<?= $author['id'] ?>" class="delete">Delete</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-
-        <hr/>
-
-        <div class="add-author">
-            <a href="./pages/addAuthor.php" class="add">+</a>
-        </div>
-
-    </div>
-</body>
-</html>

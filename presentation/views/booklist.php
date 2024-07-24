@@ -1,12 +1,10 @@
-<?php include "../includes/data.php"; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book List</title>
-    <link rel="stylesheet" href="../css/booklist.css">
+    <link rel="stylesheet" href="/presentation/public/css/booklist.css">
 </head>
 <body>
 
@@ -24,11 +22,11 @@
         <?php foreach ($books as $book): ?>
             <div class="book-item">
                 <div class="book-details">
-                    <span class="book-info"><?= htmlspecialchars($book['name']) . ' (' . htmlspecialchars($book['year']) . ')' ?></span>
+                    <span class="book-info"><?= htmlspecialchars($book->getName()) . ' (' . htmlspecialchars($book->getYear()) . ')' ?></span>
                 </div>
                 <div class="book-actions">
-                    <a class="edit">Edit</a>
-                    <a class="delete">Delete</a>
+                    <a href="/editBook/<?= $book->getId(); ?>" class="edit">Edit</a>
+                    <a href="/deleteBook/<?= $book->getId(); ?>" class="delete">Delete</a>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -36,7 +34,10 @@
         <hr/>
 
         <div class="add-book">
-            <a href="add_book.php" class="add">+</a>
+            <form action="/addBook" method="POST">
+                <input type="hidden" name="author_id" value="<?= $author_id; ?>" />
+                <button type="submit" class="add">+</button>
+            </form>
         </div>
 
     </div>
