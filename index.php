@@ -1,24 +1,13 @@
 <?php
-require_once __DIR__ . '/Utilities/SessionManager.php';
-require_once __DIR__ . '/Presentation/Controllers/AuthorController.php';
-require_once __DIR__ . '/Presentation/Controllers/BookController.php';
-require_once __DIR__ . '/Data/Repositories/SessionAuthorRepository.php';
-require_once __DIR__ . '/Data/Repositories/SessionBookRepository.php';
-require_once __DIR__ . '/Business/Services/AuthorService.php';
-require_once __DIR__ . '/Business/Services/BookService.php';
 
-$session = SessionManager::getInstance();
+require_once __DIR__ . '/Infrastructure/Bootstrap.php';
 
-$sessionManager = SessionManager::getInstance();
-$authorRepository = new SessionAuthorRepository($sessionManager);
-$bookRepository = new SessionBookRepository($sessionManager);
+Bootstrap::initialize();
 
-$authorService = new AuthorService($authorRepository, $bookRepository);
-$bookService = new BookService($bookRepository, $authorRepository);
+$registry = ServiceRegistry::getInstance();
 
-$authorController = new AuthorController($authorService);
-$bookController = new BookController($bookService);
-
+$authorController = $registry->get(AuthorController::class);
+$bookController = $registry->get(BookController::class);
 
 $url = isset($_GET['url']) ? $_GET['url'] : 'authors';
 $urlParts = explode('/', $url);
@@ -54,4 +43,3 @@ switch ($page) {
         $authorController->index();
         break;
 }
-

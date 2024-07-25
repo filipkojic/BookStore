@@ -123,4 +123,3 @@ class AuthorController {
         include __DIR__ . '/../Views/deleteAuthor.php';
     }
 }
-
