@@ -10,22 +10,22 @@ class Book
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var int
      */
-    private $year;
+    private int $year;
 
     /**
      * @var int
      */
-    private $authorId;
+    private int $authorId;
 
     /**
      * Book constructor.

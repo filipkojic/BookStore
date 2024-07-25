@@ -14,12 +14,12 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * @var Book[] Array of Book objects.
      */
-    private $books;
+    private array $books;
 
     /**
      * @var SessionManager
      */
-    private $session;
+    private SessionManager $session;
 
     /**
      * SessionBookRepository constructor.
@@ -141,6 +141,24 @@ class SessionBookRepository implements BookRepositoryInterface
         }
         return $authorBooks;
     }
+
+    /**
+     * Get the book count by author ID.
+     *
+     * @param int $authorId Author ID.
+     * @return int Number of books by the given author.
+     */
+    public function getBookCountByAuthorId(int $authorId): int
+    {
+        $count = 0;
+        foreach ($this->books as $book) {
+            if ($book->getAuthorId() === $authorId) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
 
     /**
      * Update the session storage with current books.

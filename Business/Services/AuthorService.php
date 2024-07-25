@@ -14,12 +14,12 @@ class AuthorService implements AuthorServiceInterface
     /**
      * @var AuthorRepositoryInterface
      */
-    private $authorRepository;
+    private AuthorRepositoryInterface $authorRepository;
 
     /**
      * @var BookRepositoryInterface
      */
-    private $bookRepository;
+    private BookRepositoryInterface $bookRepository;
 
     /**
      * AuthorService constructor.
@@ -93,4 +93,16 @@ class AuthorService implements AuthorServiceInterface
         }
         return $this->authorRepository->delete($id);
     }
+
+    /**
+     * Get the book count for a given author.
+     *
+     * @param int $authorId Author ID.
+     * @return int Number of books by the given author.
+     */
+    public function getBookCountByAuthorId(int $authorId): int
+    {
+        return $this->bookRepository->getBookCountByAuthorId($authorId);
+    }
+
 }

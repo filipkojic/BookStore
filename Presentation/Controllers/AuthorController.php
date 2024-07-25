@@ -12,7 +12,7 @@ class AuthorController {
     /**
      * @var AuthorService
      */
-    private $authorService;
+    private AuthorService $authorService;
 
     /**
      * AuthorController constructor.
@@ -26,15 +26,20 @@ class AuthorController {
     /**
      * Display a list of all authors.
      */
-    public function index() {
+    public function index(): void {
         $authors = $this->authorService->getAllAuthors();
+        foreach ($authors as $author) {
+            $bookCount = $this->authorService->getBookCountByAuthorId($author->getId());
+            $author->setBookCount($bookCount);
+        }
         include __DIR__ . '/../Views/authorList.php';
     }
+
 
     /**
      * Create a new author.
      */
-    public function create() {
+    public function create(): void {
         $firstNameError = $lastNameError = "";
         $firstName = $lastName = "";
 
@@ -70,7 +75,7 @@ class AuthorController {
      *
      * @param int $id Author ID.
      */
-    public function edit(int $id) {
+    public function edit(int $id): void {
         $author = $this->authorService->getAuthorById($id);
         $firstNameError = $lastNameError = "";
         $firstName = $author->getFirstName();
@@ -108,7 +113,7 @@ class AuthorController {
      *
      * @param int $id Author ID.
      */
-    public function delete(int $id) {
+    public function delete(int $id): void {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $this->authorService->deleteAuthor($id);
             header("Location: /index.php");

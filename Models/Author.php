@@ -10,22 +10,22 @@ class Author
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var string
      */
-    private $firstName;
+    private string $firstName;
 
     /**
      * @var string
      */
-    private $lastName;
+    private string $lastName;
 
     /**
      * @var int
      */
-    private $bookCount;
+    private int $bookCount;
 
     /**
      * Author constructor.
@@ -33,14 +33,13 @@ class Author
      * @param int $id
      * @param string $firstName
      * @param string $lastName
-     * @param int $bookCount
      */
-    public function __construct(int $id, string $firstName, string $lastName, int $bookCount)
+    public function __construct(int $id, string $firstName, string $lastName)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->bookCount = $bookCount;
+        $this->bookCount = 0;
     }
 
     /**
@@ -53,7 +52,7 @@ class Author
     {
         $authors = [];
         foreach ($batch as $item) {
-            $authors[] = new Author($item['id'], $item['firstName'], $item['lastName'], $item['bookCount']);
+            $authors[] = new Author($item['id'], $item['firstName'], $item['lastName']);
         }
         return $authors;
     }
@@ -132,8 +131,7 @@ class Author
         return [
             'id' => $this->id,
             'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'bookCount' => $this->bookCount
+            'lastName' => $this->lastName
         ];
     }
 }

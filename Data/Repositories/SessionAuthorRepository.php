@@ -19,7 +19,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     /**
      * @var SessionManager
      */
-    private $session;
+    private SessionManager $session;
 
     /**
      * SessionAuthorRepository constructor.
@@ -31,10 +31,10 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
 
         if (!$authors) {
             $authors = [
-                (new Author(1, 'Pera', 'Peric', 2))->toArray(),
-                (new Author(2, 'Mika', 'Mikic', 1))->toArray(),
-                (new Author(3, 'Zika', 'Zikic', 1))->toArray(),
-                (new Author(4, 'Nikola', 'Nikolic', 0))->toArray()
+                (new Author(1, 'Pera', 'Peric'))->toArray(),
+                (new Author(2, 'Mika', 'Mikic'))->toArray(),
+                (new Author(3, 'Zika', 'Zikic'))->toArray(),
+                (new Author(4, 'Nikola', 'Nikolic'))->toArray()
             ];
             $this->session->set('authors', $authors);
         }
@@ -79,7 +79,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     {
         $lastAuthor = end($this->authors);
         $id = $lastAuthor ? $lastAuthor->getId() + 1 : 1;
-        $newAuthor = new Author($id, $firstName, $lastName, 0);
+        $newAuthor = new Author($id, $firstName, $lastName);
         $this->authors[] = $newAuthor;
         $this->updateSession();
         return $newAuthor;
@@ -122,38 +122,6 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
             }
         }
         return false;
-    }
-
-    /**
-     * Increment the book count for an author.
-     *
-     * @param int $authorId Author ID.
-     */
-    public function incrementBookCount(int $authorId): void
-    {
-        foreach ($this->authors as $author) {
-            if ($author->getId() === $authorId) {
-                $author->setBookCount($author->getBookCount() + 1);
-                $this->updateSession();
-                return;
-            }
-        }
-    }
-
-    /**
-     * Decrement the book count for an author.
-     *
-     * @param int $authorId Author ID.
-     */
-    public function decrementBookCount(int $authorId): void
-    {
-        foreach ($this->authors as $author) {
-            if ($author->getId() === $authorId) {
-                $author->setBookCount($author->getBookCount() - 1);
-                $this->updateSession();
-                return;
-            }
-        }
     }
 
     /**

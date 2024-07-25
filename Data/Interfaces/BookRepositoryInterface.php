@@ -57,4 +57,12 @@ interface BookRepositoryInterface
      * @return Book[] Array of Book objects by the given author.
      */
     public function getBooksByAuthorId(int $authorId): array;
+
+    /**
+     * Get the book count by author ID.
+     *
+     * @param int $authorId Author ID.
+     * @return int Number of books by the given author.
+     */
+    public function getBookCountByAuthorId(int $authorId): int;
 }

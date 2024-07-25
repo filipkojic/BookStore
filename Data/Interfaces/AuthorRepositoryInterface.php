@@ -48,18 +48,4 @@ interface AuthorRepositoryInterface
      * @return bool True if deletion was successful, false otherwise.
      */
     public function delete(int $id): bool;
-
-    /**
-     * Increment the book count for an author.
-     *
-     * @param int $authorId Author ID.
-     */
-    public function incrementBookCount(int $authorId): void;
-
-    /**
-     * Decrement the book count for an author.
-     *
-     * @param int $authorId Author ID.
-     */
-    public function decrementBookCount(int $authorId): void;
 }

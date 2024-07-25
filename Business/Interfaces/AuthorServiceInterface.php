@@ -48,4 +48,12 @@ interface AuthorServiceInterface
      * @return bool True if deletion was successful, false otherwise.
      */
     public function deleteAuthor(int $id): bool;
+
+    /**
+     * Get the book count for a given author.
+     *
+     * @param int $authorId Author ID.
+     * @return int Number of books by the given author.
+     */
+    public function getBookCountByAuthorId(int $authorId): int;
 }

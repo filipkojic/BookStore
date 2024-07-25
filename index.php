@@ -9,11 +9,6 @@ require_once __DIR__ . '/Business/Services/BookService.php';
 
 $session = SessionManager::getInstance();
 
-//session_start();
-//session_unset();
-//session_destroy();
-//session_start();
-
 $sessionManager = SessionManager::getInstance();
 $authorRepository = new SessionAuthorRepository($sessionManager);
 $bookRepository = new SessionBookRepository($sessionManager);

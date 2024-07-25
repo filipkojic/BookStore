@@ -12,7 +12,7 @@ class BookController {
     /**
      * @var BookService
      */
-    private $bookService;
+    private BookService $bookService;
 
     /**
      * BookController constructor.
@@ -26,7 +26,7 @@ class BookController {
     /**
      * Display a list of all books.
      */
-    public function index() {
+    public function index(): void {
         $books = $this->bookService->getAllBooks();
         include __DIR__ . '/../Views/bookList.php';
     }
@@ -36,7 +36,7 @@ class BookController {
      *
      * @param int $authorId Author ID.
      */
-    public function getBooksByAuthor(int $authorId) {
+    public function getBooksByAuthor(int $authorId): void {
         $books = $this->bookService->getBooksByAuthorId($authorId);
         include __DIR__ . '/../Views/bookList.php';
     }
@@ -44,7 +44,7 @@ class BookController {
     /**
      * Create a new book.
      */
-    public function create() {
+    public function create(): void {
         $nameError = $yearError = "";
         $name = $year = "";
         $authorId = isset($_POST['authorId']) ? intval($_POST['authorId']) : null;
@@ -83,7 +83,7 @@ class BookController {
      *
      * @param int $id Book ID.
      */
-    public function edit(int $id) {
+    public function edit(int $id): void {
         $book = $this->bookService->getBookById($id);
         $nameError = $yearError = "";
         $name = $book->getName();
@@ -122,7 +122,7 @@ class BookController {
      *
      * @param int $id Book ID.
      */
-    public function delete(int $id) {
+    public function delete(int $id): void {
         $book = $this->bookService->getBookById($id);
         $authorId = $book->getAuthorId();
 

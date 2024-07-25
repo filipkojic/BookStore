@@ -14,12 +14,12 @@ class BookService implements BookServiceInterface
     /**
      * @var BookRepositoryInterface
      */
-    private $bookRepository;
+    private BookRepositoryInterface $bookRepository;
 
     /**
      * @var AuthorRepositoryInterface
      */
-    private $authorRepository;
+    private AuthorRepositoryInterface $authorRepository;
 
     /**
      * BookService constructor.
@@ -65,7 +65,6 @@ class BookService implements BookServiceInterface
     public function addBook(string $name, int $year, int $authorId): Book
     {
         $newBook = $this->bookRepository->create($name, $year, $authorId);
-        $this->authorRepository->incrementBookCount($authorId);
         return $newBook;
     }
 
@@ -93,7 +92,6 @@ class BookService implements BookServiceInterface
         $book = $this->bookRepository->getById($id);
         if ($book) {
             $this->bookRepository->delete($id);
-            $this->authorRepository->decrementBookCount($book->getAuthorId());
             return true;
         }
         return false;
