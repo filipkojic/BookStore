@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Author Create</title>
-    <link rel="stylesheet" href="/Presentation/Public/css/authorForm.css">
+    <link rel="stylesheet" href="/src/Presentation/Public/css/authorForm.css">
 </head>
 <body>
 

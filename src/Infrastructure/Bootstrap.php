@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../Utilities/SessionManager.php';
+require_once __DIR__ . '/../Infrastructure/SessionManager.php';
 require_once __DIR__ . '/../Presentation/Controllers/AuthorController.php';
 require_once __DIR__ . '/../Presentation/Controllers/BookController.php';
 require_once __DIR__ . '/../Data/Repositories/SessionAuthorRepository.php';

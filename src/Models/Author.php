@@ -1,61 +1,28 @@
 <?php
 
+require_once __DIR__ . '/AbstractEntity.php';
+
 /**
  * Class Author
  *
  * Represents an author with a first name, last name, and book count.
  */
-class Author
+class Author extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    private int $id;
-
-    /**
-     * @var string
-     */
-    private string $firstName;
-
-    /**
-     * @var string
-     */
-    private string $lastName;
-
-    /**
-     * @var int
-     */
-    private int $bookCount;
-
     /**
      * Author constructor.
      *
      * @param int $id
      * @param string $firstName
      * @param string $lastName
+     * @param int $bookCount
      */
-    public function __construct(int $id, string $firstName, string $lastName)
-    {
-        $this->id = $id;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->bookCount = 0;
-    }
-
-    /**
-     * Creates an array of Author objects from a batch of data.
-     *
-     * @param array $batch
-     * @return self[]
-     */
-    public static function fromBatch(array $batch): array
-    {
-        $authors = [];
-        foreach ($batch as $item) {
-            $authors[] = new Author($item['id'], $item['firstName'], $item['lastName']);
-        }
-        return $authors;
-    }
+    public function __construct(
+        private int $id,
+        private string $firstName,
+        private string $lastName,
+        private int $bookCount = 0
+    ) {}
 
     /**
      * @return int

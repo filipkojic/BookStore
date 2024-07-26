@@ -1,32 +1,14 @@
 <?php
 
+require_once __DIR__ . '/AbstractEntity.php';
+
 /**
  * Class Book
  *
  * Represents a book with a name, publication year, and author ID.
  */
-class Book
+class Book extends AbstractEntity
 {
-    /**
-     * @var int
-     */
-    private int $id;
-
-    /**
-     * @var string
-     */
-    private string $name;
-
-    /**
-     * @var int
-     */
-    private int $year;
-
-    /**
-     * @var int
-     */
-    private int $authorId;
-
     /**
      * Book constructor.
      *
@@ -35,28 +17,12 @@ class Book
      * @param int $year
      * @param int $authorId
      */
-    public function __construct(int $id, string $name, int $year, int $authorId)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->year = $year;
-        $this->authorId = $authorId;
-    }
-
-    /**
-     * Creates an array of Book objects from a batch of data.
-     *
-     * @param array $batch
-     * @return self[]
-     */
-    public static function fromBatch(array $batch): array
-    {
-        $books = [];
-        foreach ($batch as $item) {
-            $books[] = new Book($item['id'], $item['name'], $item['year'], $item['authorId']);
-        }
-        return $books;
-    }
+    public function __construct(
+        private int $id,
+        private string $name,
+        private int $year,
+        private int $authorId
+    ) {}
 
     /**
      * @return int

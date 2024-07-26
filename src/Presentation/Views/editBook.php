@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Create</title>
-    <link rel="stylesheet" href="/Presentation/Public/css/bookForm.css">
+    <title>Book Edit</title>
+    <link rel="stylesheet" href="/src/Presentation/Public/css/editBookForm.css">
 </head>
 <body>
 
 <div class="form-container">
-    <h2>Book Create</h2>
+    <h2>Edit Book (ID: <?php echo $book->getId(); ?>)</h2>
     <hr>
-    <form action="/addBook" method="POST">
-        <input type="hidden" name="authorId" value="<?php echo htmlspecialchars($authorId); ?>" />
-        <input type="hidden" name="formSubmitted" value="1" />
+    <form action="/editBook/<?php echo $book->getId(); ?>" method="POST">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>" maxlength="250">
+        <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($name); ?>">
         <?php if ($nameError): ?>
             <span class="error"><?php echo $nameError; ?></span>
         <?php endif; ?>

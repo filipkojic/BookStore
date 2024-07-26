@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../Interfaces/AuthorRepositoryInterface.php';
 require_once __DIR__ . '/../../Models/Author.php';
-require_once __DIR__ . '/../../Utilities/SessionManager.php';
+require_once __DIR__ . '/../../Infrastructure/SessionManager.php';
 
 /**
  * Class SessionAuthorRepository
