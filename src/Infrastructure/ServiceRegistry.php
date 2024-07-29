@@ -32,6 +32,7 @@ class ServiceRegistry extends Singleton {
         if (!isset($this->services[$key])) {
             throw new Exception("Service not found: " . $key);
         }
+
         return $this->services[$key];
     }
 }

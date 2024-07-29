@@ -61,6 +61,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
                 return $author;
             }
         }
+
         return null;
     }
 
@@ -78,6 +79,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
         $newAuthor = new Author($id, $firstName, $lastName);
         $this->authors[] = $newAuthor;
         $this->updateSession();
+
         return $newAuthor;
     }
 
@@ -99,6 +101,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
                 return $author;
             }
         }
+
         return null;
     }
 
@@ -117,6 +120,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
                 return true;
             }
         }
+
         return false;
     }
 

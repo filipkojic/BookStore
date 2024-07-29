@@ -8,41 +8,30 @@
 class HttpRequest
 {
     /**
-     * @var array Query parameters from the URL.
-     */
-    private array $queryParams;
-
-    /**
-     * @var array Body parameters from the POST request.
-     */
-    private array $bodyParams;
-
-    /**
-     * @var array Headers from the HTTP request.
-     */
-    private array $headers;
-
-    /**
-     * @var string HTTP method (e.g., GET, POST).
-     */
-    private string $method;
-
-    /**
-     * @var string URI of the HTTP request.
-     */
-    private string $uri;
-
-    /**
      * HttpRequest constructor.
      * Initializes the request parameters from the global PHP variables.
      */
-    public function __construct()
-    {
-        $this->queryParams = $_GET;
-        $this->bodyParams = $_POST;
-        $this->headers = getallheaders();
-        $this->method = $_SERVER['REQUEST_METHOD'];
-        $this->uri = $_SERVER['REQUEST_URI'];
+    public function __construct(
+        private array $queryParams = [],
+        private array $bodyParams = [],
+        private array $headers = [],
+        private string $method = '',
+        private string $uri = ''
+    ) {
+        try {
+            $this->queryParams = GlobalWrapper::getGlobal('_GET');
+            $this->bodyParams = GlobalWrapper::getGlobal('_POST');
+            $this->headers = GlobalWrapper::getAllHeaders();
+            $this->method = GlobalWrapper::getGlobal('_SERVER')['REQUEST_METHOD'];
+            $this->uri = GlobalWrapper::getGlobal('_SERVER')['REQUEST_URI'];
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $this->queryParams = [];
+            $this->bodyParams = [];
+            $this->headers = [];
+            $this->method = '';
+            $this->uri = '';
+        }
     }
 
     /**
@@ -99,5 +88,29 @@ class HttpRequest
     public function getUri(): string
     {
         return $this->uri;
+    }
+
+    /**
+     * Get the ID from the URI.
+     *
+     * @return int|null The ID from the URI or null if not found.
+     */
+    public function getId(): ?int
+    {
+        $urlParts = explode('/', trim($this->uri, '/'));
+
+        return isset($urlParts[1]) ? (int)$urlParts[1] : null;
+    }
+
+    /**
+     * Get the path from the URI.
+     *
+     * @return string The path from the URI.
+     */
+    public function getPath(): string
+    {
+        $urlParts = explode('/', trim($this->uri, '/'));
+
+        return $urlParts[0] ?? '';
     }
 }

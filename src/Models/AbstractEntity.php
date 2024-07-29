@@ -14,6 +14,7 @@ abstract class AbstractEntity
         foreach ($batch as $item) {
             $entities[] = new static(...array_values($item));
         }
+
         return $entities;
     }
 

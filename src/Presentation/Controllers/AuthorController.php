@@ -6,19 +6,15 @@
  * This class handles author-related operations.
  */
 class AuthorController {
-    /**
-     * @var AuthorService
-     */
-    private AuthorService $authorService;
 
     /**
      * AuthorController constructor.
      *
      * @param AuthorService $authorService
      */
-    public function __construct(AuthorService $authorService) {
-        $this->authorService = $authorService;
-    }
+    public function __construct(
+        private AuthorService $authorService
+    ) {}
 
     /**
      * Display a list of all authors.

@@ -6,19 +6,15 @@
  * This class handles book-related operations.
  */
 class BookController {
-    /**
-     * @var BookService
-     */
-    private BookService $bookService;
 
     /**
      * BookController constructor.
      *
      * @param BookService $bookService
      */
-    public function __construct(BookService $bookService) {
-        $this->bookService = $bookService;
-    }
+    public function __construct(
+        private BookService $bookService
+    ) {}
 
     /**
      * Display a list of all books.

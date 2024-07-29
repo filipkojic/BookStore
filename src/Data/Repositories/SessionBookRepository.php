@@ -61,6 +61,7 @@ class SessionBookRepository implements BookRepositoryInterface
                 return $book;
             }
         }
+
         return null;
     }
 
@@ -79,6 +80,7 @@ class SessionBookRepository implements BookRepositoryInterface
         $newBook = new Book($id, $name, $year, $authorId);
         $this->books[] = $newBook;
         $this->updateSession();
+
         return $newBook;
     }
 
@@ -100,6 +102,7 @@ class SessionBookRepository implements BookRepositoryInterface
                 return $book;
             }
         }
+
         return null;
     }
 
@@ -118,6 +121,7 @@ class SessionBookRepository implements BookRepositoryInterface
                 return true;
             }
         }
+
         return false;
     }
 
@@ -135,6 +139,7 @@ class SessionBookRepository implements BookRepositoryInterface
                 $authorBooks[] = $book;
             }
         }
+
         return $authorBooks;
     }
 
@@ -152,6 +157,7 @@ class SessionBookRepository implements BookRepositoryInterface
                 $count++;
             }
         }
+
         return $count;
     }
 

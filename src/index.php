@@ -9,13 +9,11 @@ $registry = ServiceRegistry::getInstance();
 $authorController = $registry->get(AuthorController::class);
 $bookController = $registry->get(BookController::class);
 
-$url = isset($_GET['url']) ? $_GET['url'] : 'authors';
-$urlParts = explode('/', $url);
-$page = $urlParts[0];
-$id = isset($urlParts[1]) ? (int)$urlParts[1] : null;
-
 $request = new HttpRequest();
 $response = new HttpResponse();
+
+$page = $request->getPath();
+$id = $request->getId();
 
 switch ($page) {
     case 'authors':

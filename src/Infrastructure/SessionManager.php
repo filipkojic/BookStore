@@ -25,8 +25,7 @@ class SessionManager extends Singleton {
      * @return mixed|null The value associated with the key, or null if not set.
      */
     public function get(string $key) {
-        $session = GlobalWrapper::getGlobal('_SESSION');
-        return $session[$key] ?? null;
+        return GlobalWrapper::getSessionValue($key);
     }
 
     /**
@@ -36,9 +35,7 @@ class SessionManager extends Singleton {
      * @param mixed $value The value to set.
      */
     public function set(string $key, $value): void {
-        $session = GlobalWrapper::getGlobal('_SESSION');
-        $session[$key] = $value;
-        $_SESSION[$key] = $value;
+        GlobalWrapper::setSessionValue($key, $value);
     }
 
     /**
@@ -47,17 +44,14 @@ class SessionManager extends Singleton {
      * @param string $key The key to unset.
      */
     public function unset(string $key): void {
-        $session = GlobalWrapper::getGlobal('_SESSION');
-        unset($session[$key]);
-        unset($_SESSION[$key]);
+        GlobalWrapper::unsetSessionValue($key);
     }
 
     /**
      * Destroy the session.
      */
     public function destroy(): void {
-        session_unset();
-        session_destroy();
+        GlobalWrapper::destroySession();
         self::$instances[static::class] = null;
     }
 }

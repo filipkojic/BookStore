@@ -27,6 +27,7 @@ abstract class Singleton {
         if (!isset(static::$instances[$class])) {
             static::$instances[$class] = new static();
         }
+
         return static::$instances[$class];
     }
 }

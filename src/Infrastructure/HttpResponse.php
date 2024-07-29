@@ -8,30 +8,18 @@
 class HttpResponse
 {
     /**
-     * @var int HTTP status code (e.g., 200, 404).
-     */
-    private int $statusCode;
-
-    /**
-     * @var array Headers to be sent with the response.
-     */
-    private array $headers;
-
-    /**
-     * @var string Body of the response.
-     */
-    private string $body;
-
-    /**
      * HttpResponse constructor.
      * Initializes the response with a default status code and empty headers and body.
+     *
+     * @param int $statusCode HTTP status code (e.g., 200, 404).
+     * @param array $headers Headers to be sent with the response.
+     * @param string $body Body of the response.
      */
-    public function __construct()
-    {
-        $this->statusCode = 200;
-        $this->headers = [];
-        $this->body = '';
-    }
+    public function __construct(
+        private int $statusCode = 200,
+        private array $headers = [],
+        private string $body = ''
+    ) {}
 
     /**
      * Set the HTTP status code for the response.
