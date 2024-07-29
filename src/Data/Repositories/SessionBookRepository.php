@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../Interfaces/BookRepositoryInterface.php';
-require_once __DIR__ . '/../../Models/Book.php';
-require_once __DIR__ . '/../../Infrastructure/SessionManager.php';
-
 /**
  * Class SessionBookRepository
  *

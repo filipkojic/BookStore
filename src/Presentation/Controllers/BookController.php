@@ -1,10 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../../Business/Services/BookService.php';
-require_once __DIR__ . '/../../Data/Repositories/SessionBookRepository.php';
-require_once __DIR__ . '/../../Infrastructure/HttpRequest.php';
-require_once __DIR__ . '/../../Infrastructure/HttpResponse.php';
-
 /**
  * Class BookController
  *

@@ -22,7 +22,7 @@
 
         <?php foreach ($authors as $author): ?>
             <div class="author-item">
-                <img src="/Presentation/Public/img/default-avatar.jpg" alt="Avatar" class="avatar">
+                <img src="/src/Presentation/Public/img/default-avatar.jpg" alt="Avatar" class="avatar">
                 <div class="author-details">
                     <span class="name"><a href="/books/<?php echo $author->getId(); ?>"><?php echo $author->getFirstName() . ' ' . $author->getLastName(); ?></a></span>
                 </div>

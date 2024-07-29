@@ -1,14 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../Infrastructure/SessionManager.php';
-require_once __DIR__ . '/../Presentation/Controllers/AuthorController.php';
-require_once __DIR__ . '/../Presentation/Controllers/BookController.php';
-require_once __DIR__ . '/../Data/Repositories/SessionAuthorRepository.php';
-require_once __DIR__ . '/../Data/Repositories/SessionBookRepository.php';
-require_once __DIR__ . '/../Business/Services/AuthorService.php';
-require_once __DIR__ . '/../Business/Services/BookService.php';
-require_once __DIR__ . '/ServiceRegistry.php';
-
 /**
  * Class Bootstrap
  *

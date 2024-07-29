@@ -5,31 +5,17 @@
  *
  * Singleton class to manage PHP sessions.
  */
-class SessionManager {
+class SessionManager extends Singleton {
     /**
-     * @var SessionManager|null The single instance of the class.
+     * SessionManager constructor.
+     *
+     * Starts the session if it is not already started.
      */
-    private static $instance = null;
-
-    /**
-     * Private constructor to prevent multiple instances.
-     */
-    private function __construct() {
+    protected function __construct() {
+        parent::__construct();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-    }
-
-    /**
-     * Get the single instance of the class.
-     *
-     * @return SessionManager The single instance of the class.
-     */
-    public static function getInstance(): SessionManager {
-        if (self::$instance == null) {
-            self::$instance = new SessionManager();
-        }
-        return self::$instance;
     }
 
     /**
@@ -39,7 +25,8 @@ class SessionManager {
      * @return mixed|null The value associated with the key, or null if not set.
      */
     public function get(string $key) {
-        return $_SESSION[$key] ?? null;
+        $session = GlobalWrapper::getGlobal('_SESSION');
+        return $session[$key] ?? null;
     }
 
     /**
@@ -49,6 +36,8 @@ class SessionManager {
      * @param mixed $value The value to set.
      */
     public function set(string $key, $value): void {
+        $session = GlobalWrapper::getGlobal('_SESSION');
+        $session[$key] = $value;
         $_SESSION[$key] = $value;
     }
 
@@ -58,6 +47,8 @@ class SessionManager {
      * @param string $key The key to unset.
      */
     public function unset(string $key): void {
+        $session = GlobalWrapper::getGlobal('_SESSION');
+        unset($session[$key]);
         unset($_SESSION[$key]);
     }
 
@@ -67,6 +58,6 @@ class SessionManager {
     public function destroy(): void {
         session_unset();
         session_destroy();
-        self::$instance = null;
+        self::$instances[static::class] = null;
     }
 }

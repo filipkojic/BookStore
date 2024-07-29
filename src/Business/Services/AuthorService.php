@@ -1,9 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../Interfaces/AuthorServiceInterface.php';
-require_once __DIR__ . '/../../Data/Interfaces/AuthorRepositoryInterface.php';
-require_once __DIR__ . '/../../Data/Interfaces/BookRepositoryInterface.php';
-
 /**
  * Class AuthorService
  *

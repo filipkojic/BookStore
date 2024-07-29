@@ -3,37 +3,13 @@
 /**
  * Class ServiceRegistry
  *
- * This class implements the Service Registry Design Pattern.
+ * Singleton class that implements the Service Registry design pattern.
  */
-class ServiceRegistry
-{
-    /**
-     * @var ServiceRegistry|null The single instance of the ServiceRegistry.
-     */
-    private static ?ServiceRegistry $instance = null;
-
+class ServiceRegistry extends Singleton {
     /**
      * @var array An associative array holding the registered services.
      */
     private array $services = [];
-
-    /**
-     * Private constructor to prevent creating a new instance outside of this class.
-     */
-    private function __construct() {}
-
-    /**
-     * Get the single instance of the ServiceRegistry.
-     *
-     * @return ServiceRegistry The instance of the ServiceRegistry.
-     */
-    public static function getInstance(): ServiceRegistry
-    {
-        if (self::$instance === null) {
-            self::$instance = new ServiceRegistry();
-        }
-        return self::$instance;
-    }
 
     /**
      * Register a service with the given key.
@@ -41,8 +17,7 @@ class ServiceRegistry
      * @param string $key The key to identify the service.
      * @param mixed $service The service to register.
      */
-    public function register(string $key, mixed $service): void
-    {
+    public function register(string $key, $service): void {
         $this->services[$key] = $service;
     }
 
@@ -53,12 +28,10 @@ class ServiceRegistry
      * @return mixed The registered service.
      * @throws Exception If the service is not found.
      */
-    public function get(string $key): mixed
-    {
+    public function get(string $key) {
         if (!isset($this->services[$key])) {
             throw new Exception("Service not found: " . $key);
         }
         return $this->services[$key];
     }
 }
-

@@ -1,8 +1,6 @@
 <?php
 
-require_once __DIR__ . '/Infrastructure/Bootstrap.php';
-require_once __DIR__ . '/Infrastructure/HttpRequest.php';
-require_once __DIR__ . '/Infrastructure/HttpResponse.php';
+require_once __DIR__ . '/autoload.php';
 
 Bootstrap::initialize();
 
