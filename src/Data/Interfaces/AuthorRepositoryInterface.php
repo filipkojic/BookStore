@@ -1,5 +1,9 @@
 <?php
 
+namespace Filip\Bookstore\Data\Interfaces;
+
+use Filip\Bookstore\Models\Author;
+
 /**
  * Interface AuthorRepositoryInterface
  *

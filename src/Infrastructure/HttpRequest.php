@@ -1,5 +1,7 @@
 <?php
 
+namespace Filip\Bookstore\Infrastructure;
+
 /**
  * Class HttpRequest
  *

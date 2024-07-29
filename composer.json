@@ -1,0 +1,21 @@
+{
+    "name": "filip/bookstore",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Filip\\Bookstore\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Filip Kojic",
+            "email": "filip.kojic@logeecom.com"
+        }
+    ],
+    "require": {},
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        }
+    }
+}

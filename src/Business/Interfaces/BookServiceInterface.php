@@ -1,5 +1,8 @@
 <?php
 
+namespace Filip\Bookstore\Business\Interfaces;
+use Filip\Bookstore\Models\Book;
+
 /**
  * Interface BookServiceInterface
  *

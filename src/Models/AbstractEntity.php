@@ -1,5 +1,7 @@
 <?php
 
+namespace Filip\Bookstore\Models;
+
 abstract class AbstractEntity
 {
     /**

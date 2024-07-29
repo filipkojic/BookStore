@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/AbstractEntity.php';
+namespace Filip\Bookstore\Models;
 
 /**
  * Class Book

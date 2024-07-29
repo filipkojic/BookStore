@@ -1,5 +1,9 @@
 <?php
 
+namespace Filip\Bookstore\Infrastructure;
+
+use Exception;
+
 class GlobalWrapper
 {
     /**

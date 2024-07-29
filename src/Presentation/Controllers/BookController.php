@@ -1,5 +1,10 @@
 <?php
 
+namespace Filip\Bookstore\Presentation\Controllers;
+use Filip\Bookstore\Business\Services\BookService;
+use Filip\Bookstore\Infrastructure\HttpRequest;
+use Filip\Bookstore\Infrastructure\HttpResponse;
+
 /**
  * Class BookController
  *

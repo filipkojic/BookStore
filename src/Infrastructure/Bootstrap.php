@@ -1,5 +1,16 @@
 <?php
 
+namespace Filip\Bookstore\Infrastructure;
+
+use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
+use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
+use Filip\Bookstore\Business\Services\AuthorService;
+use Filip\Bookstore\Business\Services\BookService;
+use Filip\Bookstore\Data\Repositories\SessionAuthorRepository;
+use Filip\Bookstore\Data\Repositories\SessionBookRepository;
+use Filip\Bookstore\Presentation\Controllers\AuthorController;
+use Filip\Bookstore\Presentation\Controllers\BookController;
+
 /**
  * Class Bootstrap
  *

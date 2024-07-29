@@ -1,5 +1,11 @@
 <?php
 
+namespace Filip\Bookstore\Data\Repositories;
+
+use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Infrastructure\SessionManager;
+use Filip\Bookstore\Models\Author;
+
 /**
  * Class SessionAuthorRepository
  *
