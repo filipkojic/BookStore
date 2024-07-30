@@ -186,4 +186,29 @@ class BookController {
         $response->setBody($content);
         return $response;
     }
+
+
+    // ajax metode
+    /**
+     * Get a list of books by author ID as a JSON response.
+     *
+     * @param HttpRequest $request
+     * @param int $authorId
+     * @return HttpResponse
+     */
+    public function getBooksByAuthorJson(HttpRequest $request, int $authorId): HttpResponse {
+        $books = $this->bookService->getBooksByAuthorId($authorId);
+
+        // Mapiranje podataka ako je potrebno
+        $bookData = array_map(function($book) {
+            return [
+                'id' => $book->getId(),
+                'title' => $book->getName(),
+                'year' => $book->getYear()
+            ];
+        }, $books);
+
+        $jsonResponse = json_encode(['books' => $bookData]);
+        return new HttpResponse(200, [], $jsonResponse);
+    }
 }

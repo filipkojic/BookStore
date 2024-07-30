@@ -97,4 +97,26 @@ class HttpResponse // dodaj apstrakcije, razliciti tipovi body, html, json
 
         echo $this->body;
     }
+
+//    public function json(array $data): void
+//    {
+//        http_response_code($this->statusCode);
+//
+//        foreach ($this->headers as $key => $value) {
+//            header("$key: $value");
+//        }
+//        echo $this->body;
+//    }
+
+    /**
+     * Send a JSON response to the client.
+     *
+     * @param array $data The data to be sent as JSON.
+     */
+    public function json(array $data): void
+    {
+        $this->addHeader('Content-Type', 'application/json');
+        $this->setBody(json_encode($data));
+        $this->send();
+    }
 }

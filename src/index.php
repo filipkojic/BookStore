@@ -13,7 +13,9 @@ Bootstrap::initialize();
 
 $registry = ServiceRegistry::getInstance();
 
+/** @var AuthorController $authorController */
 $authorController = $registry->get(AuthorController::class);
+/** @var BookController $bookController */
 $bookController = $registry->get(BookController::class);
 
 $request = new HttpRequest();
@@ -50,7 +52,11 @@ switch ($page) {
     default:
         $response = $authorController->index($request);
         break;
+
+    // ajax putanje
+    case 'getBooks':
+        $response = $bookController->getBooksByAuthorJson($request, $id);
+        break;
 }
 
-// Send the response
 $response->send();
