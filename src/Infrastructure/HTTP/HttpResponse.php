@@ -1,13 +1,13 @@
 <?php
 
-namespace Filip\Bookstore\Infrastructure;
+namespace Filip\Bookstore\Infrastructure\HTTP;
 
 /**
  * Class HttpResponse
  *
  * Represents an HTTP response with methods to set the status code, headers, and body.
  */
-class HttpResponse
+class HttpResponse // dodaj apstrakcije, razliciti tipovi body, html, json
 {
     /**
      * HttpResponse constructor.

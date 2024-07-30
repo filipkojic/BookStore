@@ -1,6 +1,6 @@
 <?php
 
-namespace Filip\Bookstore\Infrastructure;
+namespace Filip\Bookstore\Infrastructure\Utility;
 
 use Exception;
 

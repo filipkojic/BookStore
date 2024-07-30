@@ -1,11 +1,11 @@
 <?php
 
 use Filip\Bookstore\Infrastructure\Bootstrap;
-use Filip\Bookstore\Infrastructure\ServiceRegistry;
+use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
+use Filip\Bookstore\Infrastructure\HTTP\HttpResponse;
+use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
-use Filip\Bookstore\Infrastructure\HttpRequest;
-use Filip\Bookstore\Infrastructure\HttpResponse;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

@@ -1,7 +1,8 @@
 <?php
 
 namespace Filip\Bookstore\Business\Interfaces;
-use Filip\Bookstore\Models\Author;
+
+use Filip\Bookstore\Presentation\Models\Author;
 
 /**
  * Interface AuthorServiceInterface

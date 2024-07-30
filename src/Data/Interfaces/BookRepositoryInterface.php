@@ -2,7 +2,7 @@
 
 namespace Filip\Bookstore\Data\Interfaces;
 
-use Filip\Bookstore\Models\Book;
+use Filip\Bookstore\Presentation\Models\Book;
 
 /**
  * Interface BookRepositoryInterface

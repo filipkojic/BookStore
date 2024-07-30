@@ -2,8 +2,8 @@
 
 namespace Filip\Bookstore\Presentation\Controllers;
 use Filip\Bookstore\Business\Services\BookService;
-use Filip\Bookstore\Infrastructure\HttpRequest;
-use Filip\Bookstore\Infrastructure\HttpResponse;
+use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
+use Filip\Bookstore\Infrastructure\HTTP\HttpResponse;
 
 /**
  * Class BookController

@@ -5,7 +5,7 @@ namespace Filip\Bookstore\Business\Services;
 use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
 use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
 use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
-use Filip\Bookstore\Models\Author;
+use Filip\Bookstore\Presentation\Models\Author;
 
 /**
  * Class AuthorService

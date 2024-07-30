@@ -1,6 +1,10 @@
 <?php
 
-namespace Filip\Bookstore\Infrastructure;
+namespace Filip\Bookstore\Infrastructure\HTTP;
+
+
+use Exception;
+use Filip\Bookstore\Infrastructure\Utility\GlobalWrapper;
 
 /**
  * Class HttpRequest
@@ -97,7 +101,7 @@ class HttpRequest
      *
      * @return int|null The ID from the URI or null if not found.
      */
-    public function getId(): ?int
+    public function getId(): ?int // u kontroleru da stoji
     {
         $urlParts = explode('/', trim($this->uri, '/'));
 
