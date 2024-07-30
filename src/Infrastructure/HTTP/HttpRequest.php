@@ -19,7 +19,7 @@ class HttpRequest
      */
     public function __construct(
         private array $queryParams = [],
-        private array $bodyParams = [],
+        public array $bodyParams = [],
         private array $headers = [],
         private string $method = '',
         private string $uri = ''

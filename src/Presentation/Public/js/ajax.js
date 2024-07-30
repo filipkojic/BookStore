@@ -9,7 +9,7 @@ async function ajaxPost(url, data) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: data
     });
     return response.json();
 }

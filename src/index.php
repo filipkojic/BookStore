@@ -57,6 +57,14 @@ switch ($page) {
     case 'getBooks':
         $response = $bookController->getBooksByAuthorJson($request, $id);
         break;
+
+    case 'addBookAjax':
+        $response = $bookController->addBookAjax($request);
+        break;
+
+    case 'deleteBookAjax':
+        $response = $bookController->deleteBookAjax($request, $id);
+        break;
 }
 
 $response->send();
