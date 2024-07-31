@@ -6,10 +6,10 @@ use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
 use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Business\Services\BookService;
-use Filip\Bookstore\Data\Repositories\SessionAuthorRepository;
-use Filip\Bookstore\Data\Repositories\SessionBookRepository;
+use Filip\Bookstore\Data\Repositories\SqlAuthorRepository;
+use Filip\Bookstore\Data\Repositories\SqlBookRepository;
 use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
-use Filip\Bookstore\Infrastructure\Utility\SessionManager;
+use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
 
@@ -27,9 +27,9 @@ class Bootstrap
     {
         $registry = ServiceRegistry::getInstance();
 
-        $sessionManager = SessionManager::getInstance();
-        $authorRepository = new SessionAuthorRepository($sessionManager);
-        $bookRepository = new SessionBookRepository($sessionManager);
+        $dbConnection = DatabaseConnection::getInstance()->getConnection();
+        $authorRepository = new SQLAuthorRepository($dbConnection);
+        $bookRepository = new SQLBookRepository($dbConnection);
 
         $authorService = new AuthorService($authorRepository, $bookRepository);
         $bookService = new BookService($bookRepository, $authorRepository);
@@ -43,4 +43,3 @@ class Bootstrap
         $registry->register(BookController::class, $bookController);
     }
 }
-
