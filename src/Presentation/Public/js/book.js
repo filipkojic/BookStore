@@ -29,47 +29,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // bookList.addEventListener('click', async (event) => {
-    //     if (event.target.classList.contains('delete-book')) {
-    //         const bookId = event.target.dataset.id;
-    //         await ajaxDelete(`/deleteBook/${bookId}`);
-    //         loadBooks();
-    //     }
-    // });
+    const titleError = document.getElementById('titleError');
+    const yearError = document.getElementById('yearError');
 
-    const showAddBookFormButton = document.getElementById('show-add-book-form');
-    const addBookForm = document.getElementById('add-book-form');
-    const saveBookButton = document.getElementById('save-book-button');
+    function validateForm(title, year) {
+        let isValid = true;
+        titleError.style.display = 'none';
+        yearError.style.display = 'none';
+
+        if (!title || title.length > 250) {
+            titleError.textContent = 'The title is required and must be less than 250 characters.';
+            titleError.style.display = 'block';
+            isValid = false;
+        }
+
+        const yearValue = parseInt(year, 10);
+        if (!year || isNaN(yearValue) || yearValue === 0 || yearValue < -5000 || yearValue > 999999) {
+            yearError.textContent = 'The year is required and must be between -5000 and 999999, and cannot be 0.';
+            yearError.style.display = 'block';
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    const showAddBookFormButton = document.getElementById('showAddBookForm');
+    const addBookForm = document.getElementById('addBookForm');
+    const saveBookButton = document.getElementById('saveBookButton');
+    const closeAddBookForm = document.getElementById('closeAddBookForm');
 
     // Show the add book form when the "+" button is clicked
     showAddBookFormButton.addEventListener('click', () => {
-        if (addBookForm.style.display === 'none') {
-            addBookForm.style.display = 'block';
-        } else {
-            addBookForm.style.display = 'none';
-        }
+        addBookForm.classList.remove('hidden');
+    });
+
+    closeAddBookForm.addEventListener('click', () => {
+        addBookForm.classList.add('hidden');
     });
 
     saveBookButton.addEventListener('click', async () => {
-        const title = document.getElementById('book-title').value;
-        const year = document.getElementById('book-year').value;
-        const authorId = document.getElementById('x').value;
-        const data = JSON.stringify({title, year, authorId});
+        const title = document.getElementById('bookTitle').value;
+        const year = document.getElementById('bookYear').value;
+        const authorId = document.getElementById('authorId').value;
+        if (!validateForm(title, year)) {
+            return;
+        }
+        const data = JSON.stringify({ title, year, authorId });
         try {
             await ajaxPost(`/addBookAjax`, data);
             await loadBooks();
-            addBookForm.classList.add('hidden');
+            addBookForm.classList.add("hidden");
         } catch (error) {
             console.error('Error adding book:', error);
         }
     });
 
-
-
-    const deleteBookDialog = document.getElementById('delete-book-dialog');
-    const deleteBookMessage = document.getElementById('delete-book-message');
-    const confirmDeleteButton = document.getElementById('confirm-delete-button');
-    const cancelDeleteButton = document.getElementById('cancel-delete-button');
+    const deleteBookDialog = document.getElementById('deleteBookDialog');
+    const deleteBookMessage = document.getElementById('deleteBookMessage');
+    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+    const cancelDeleteButton = document.getElementById('cancelDeleteButton');
+    const closeDeleteBookDialog = document.getElementById('closeDeleteBookDialog');
     let bookIdToDelete = null;
 
     bookList.addEventListener('click', async (event) => {
@@ -77,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bookIdToDelete = event.target.dataset.id;
             const bookTitle = event.target.dataset.title;
             deleteBookMessage.querySelector('strong').textContent = bookTitle;
-            deleteBookDialog.style.display = 'block';
+            deleteBookDialog.classList.remove('hidden');
         }
     });
 
@@ -86,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await ajaxDelete(`/deleteBookAjax/${bookIdToDelete}`);
                 await loadBooks();
-                deleteBookDialog.style.display = 'none';
+                deleteBookDialog.classList.add('hidden');
                 bookIdToDelete = null;
             } catch (error) {
                 console.error('Error deleting book:', error);
@@ -95,8 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     cancelDeleteButton.addEventListener('click', () => {
-        deleteBookDialog.style.display = 'none';
+        deleteBookDialog.classList.add('hidden');
         bookIdToDelete = null;
+    });
+
+    closeDeleteBookDialog.addEventListener('click', () => {
+        deleteBookDialog.classList.add('hidden');
     });
 
     loadBooks();

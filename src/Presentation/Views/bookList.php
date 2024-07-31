@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book List</title>
     <link rel="stylesheet" href="/src/Presentation/Public/css/booklist.css">
-<!--    <link rel="stylesheet" href="/src/Presentation/Public/css/bookForm.css">-->
 </head>
 <body>
 
@@ -19,47 +18,49 @@
 
     <hr/>
 
-    <div class="book-list">
-
-
-
-    </div>
+    <div class="book-list"></div>
 
     <hr/>
 
     <div class="add-book">
-        <button id="show-add-book-form">+</button>
+        <button id="showAddBookForm">+</button>
     </div>
 
-    <div id="add-book-form" style="display: none;">
-        <h2>Add Book</h2>
-        <form>
-            <input type="hidden" name="authorId" id= "x" value="<?php echo htmlspecialchars($authorId); ?>" />
-            <label for="book-title">Title</label>
-            <input type="text" id="book-title" name="title">
-            <label for="book-year">Year</label>
-            <input type="text" id="book-year" name="year">
-            <button type="button" id="save-book-button">Save</button>
-        </form>
-    </div>
-
-    <div id="delete-book-dialog" style="display: none;">
-        <div class="dialog-container">
-            <div class="dialog">
-                <div class="dialog-header">
-                    <h2>Delete Book</h2>
+    <div id="addBookForm" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeAddBookForm">&times;</span>
+            <h2>Add Book</h2>
+            <hr>
+            <form>
+                <input type="hidden" name="authorId" id="authorId" value="<?php echo htmlspecialchars($authorId); ?>" />
+                <label for="bookTitle">Title</label>
+                <input type="text" id="bookTitle" name="title">
+                <span id="titleError" class="error-message"></span>
+                <label for="bookYear">Year</label>
+                <input type="text" id="bookYear" name="year">
+                <span id="yearError" class="error-message"></span>
+                <div class="button-container">
+                    <button type="button" id="saveBookButton">Save</button>
                 </div>
-                <div class="dialog-body">
-                    <p id="delete-book-message">You are about to delete the book '<strong id="x"></strong>'. If you proceed with this action, the application will permanently delete this book.</p>
-                </div>
-                <div class="dialog-footer">
-                    <button id="confirm-delete-button" class="delete-button">Delete</button>
-                    <button type="button" class="cancel-button" id="cancel-delete-button">Cancel</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
+    <div id="deleteBookDialog" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeDeleteBookDialog">&times;</span>
+            <div class="dialog-header">
+                <h2>Delete Book</h2>
+            </div>
+            <div class="dialog-body">
+                <p id="deleteBookMessage">You are about to delete the book '<strong id="bookTitle"></strong>'. If you proceed with this action, the application will permanently delete this book.</p>
+            </div>
+            <div class="dialog-footer">
+                <button id="confirmDeleteButton" class="delete-button">Delete</button>
+                <button type="button" class="cancel-button" id="cancelDeleteButton">Cancel</button>
+            </div>
+        </div>
+    </div>
 
 </div>
 <script src="/src/Presentation/Public/js/ajax.js"></script>
