@@ -1,8 +1,21 @@
+/**
+ * Send an AJAX GET request to the specified URL.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @returns {Promise<object>} - A promise that resolves to the response JSON.
+ */
 async function ajaxGet(url) {
     const response = await fetch(url);
     return response.json();
 }
 
+/**
+ * Send an AJAX POST request to the specified URL with the given data.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {string} data - The data to be sent in the body of the request.
+ * @returns {Promise<object>} - A promise that resolves to the response JSON.
+ */
 async function ajaxPost(url, data) {
     const response = await fetch(url, {
         method: 'POST',
@@ -14,6 +27,12 @@ async function ajaxPost(url, data) {
     return response.json();
 }
 
+/**
+ * Send an AJAX DELETE request to the specified URL.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @returns {Promise<object>} - A promise that resolves to the response JSON.
+ */
 async function ajaxDelete(url) {
     const response = await fetch(url, {
         method: 'DELETE'
@@ -21,6 +40,13 @@ async function ajaxDelete(url) {
     return response.json();
 }
 
+/**
+ * Send an AJAX PUT request to the specified URL with the given data.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {object} data - The data to be sent in the body of the request.
+ * @returns {Promise<object>} - A promise that resolves to the response JSON.
+ */
 async function ajaxPut(url, data) {
     const response = await fetch(url, {
         method: 'PUT',
@@ -32,6 +58,13 @@ async function ajaxPut(url, data) {
     return response.json();
 }
 
+/**
+ * Send an AJAX PATCH request to the specified URL with the given data.
+ *
+ * @param {string} url - The URL to send the request to.
+ * @param {object} data - The data to be sent in the body of the request.
+ * @returns {Promise<object>} - A promise that resolves to the response JSON.
+ */
 async function ajaxPatch(url, data) {
     const response = await fetch(url, {
         method: 'PATCH',

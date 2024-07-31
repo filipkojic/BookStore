@@ -223,9 +223,16 @@ class BookController {
         $authorId = $data['authorId'] ?? null;
 
         if ($title && $year && $authorId) {
-            $this->bookService->addBook($title, $year, (int)$authorId);
+            $book = $this->bookService->addBook($title, $year, (int)$authorId);
 
-            $jsonResponse = json_encode(['status' => 'success']);
+            $bookData = [
+                'id' => $book->getId(),
+                'title' => $book->getName(),
+                'year' => $book->getYear(),
+                'authorId' => $book->getAuthorId()
+            ];
+
+            $jsonResponse = json_encode(['status' => 'success', 'book' => $bookData]);
             return new HttpResponse(200, [], $jsonResponse);
         } else {
             $response = new HttpResponse();

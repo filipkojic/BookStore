@@ -6,32 +6,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const pathParts = urlPath.split('/');
     const authorId = pathParts[pathParts.length - 1];
 
+    /**
+     * Load books for the current author from the server.
+     */
     async function loadBooks() {
         try {
             const response = await ajaxGet(`/getBooks/${authorId}`);
             bookList.innerHTML = '';
             response.books.forEach(book => {
-                const bookElement = document.createElement('div');
-                bookElement.classList.add('book-item');
-                bookElement.innerHTML = `
-                    <div class="book-details">
-                        <span class="book-info">${book.title} (${book.year})</span>
-                    </div>
-                    <div class="book-actions">
-                        <a href="/editBook/${book.id}" class="edit">Edit</a>
-                        <button class="delete" data-id="${book.id}" data-title="${book.title}">Delete</button>
-                    </div>
-                `;
-                bookList.appendChild(bookElement);
+                appendBookToDOM(book);
             });
         } catch (error) {
             console.error('Error loading books:', error);
         }
     }
 
+    /**
+     * Append a book to the DOM.
+     *
+     * @param {object} book - The book object containing id, title, and year.
+     */
+    function appendBookToDOM(book) {
+        const bookElement = document.createElement('div');
+        bookElement.classList.add('book-item');
+        bookElement.setAttribute('data-id', book.id);
+        bookElement.innerHTML = `
+            <div class="book-details">
+                <span class="book-info">${book.title} (${book.year})</span>
+            </div>
+            <div class="book-actions">
+                <a href="/editBook/${book.id}" class="edit">Edit</a>
+                <button class="delete" data-id="${book.id}" data-title="${book.title}">Delete</button>
+            </div>
+        `;
+        bookList.appendChild(bookElement);
+    }
+
     const titleError = document.getElementById('titleError');
     const yearError = document.getElementById('yearError');
 
+    /**
+     * Validate the book form input fields.
+     *
+     * @param {string} title - The title of the book.
+     * @param {string} year - The year of the book.
+     * @returns {boolean} - Returns true if the form is valid, otherwise false.
+     */
     function validateForm(title, year) {
         let isValid = true;
         titleError.style.display = 'none';
@@ -63,10 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
         addBookForm.classList.remove('hidden');
     });
 
+    // Close the add book form when the close button is clicked
     closeAddBookForm.addEventListener('click', () => {
         addBookForm.classList.add('hidden');
     });
 
+    /**
+     * Handle the save book button click event.
+     */
     saveBookButton.addEventListener('click', async () => {
         const title = document.getElementById('bookTitle').value;
         const year = document.getElementById('bookYear').value;
@@ -76,9 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const data = JSON.stringify({ title, year, authorId });
         try {
-            await ajaxPost(`/addBookAjax`, data);
-            await loadBooks();
+            const response = await ajaxPost(`/addBookAjax`, data);
+            appendBookToDOM(response.book); // Add the new book directly to the DOM
             addBookForm.classList.add("hidden");
+            document.getElementById('bookTitle').value = '';
+            document.getElementById('bookYear').value = '';
         } catch (error) {
             console.error('Error adding book:', error);
         }
@@ -91,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeDeleteBookDialog = document.getElementById('closeDeleteBookDialog');
     let bookIdToDelete = null;
 
+    /**
+     * Handle the book list click event to show the delete confirmation dialog.
+     */
     bookList.addEventListener('click', async (event) => {
         if (event.target.classList.contains('delete')) {
             bookIdToDelete = event.target.dataset.id;
@@ -100,11 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    /**
+     * Handle the confirm delete button click event to delete the book.
+     */
     confirmDeleteButton.addEventListener('click', async () => {
         if (bookIdToDelete) {
             try {
                 await ajaxDelete(`/deleteBookAjax/${bookIdToDelete}`);
-                await loadBooks();
+                document.querySelector(`.book-item[data-id="${bookIdToDelete}"]`).remove(); // Remove the book from the DOM
                 deleteBookDialog.classList.add('hidden');
                 bookIdToDelete = null;
             } catch (error) {
@@ -113,14 +145,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    /**
+     * Handle the cancel delete button click event to close the delete confirmation dialog.
+     */
     cancelDeleteButton.addEventListener('click', () => {
         deleteBookDialog.classList.add('hidden');
         bookIdToDelete = null;
     });
 
+    /**
+     * Handle the close delete dialog button click event to close the delete confirmation dialog.
+     */
     closeDeleteBookDialog.addEventListener('click', () => {
         deleteBookDialog.classList.add('hidden');
     });
 
+    // Load books when the page is loaded
     loadBooks();
 });
