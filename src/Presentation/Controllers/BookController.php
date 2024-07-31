@@ -1,9 +1,11 @@
 <?php
 
 namespace Filip\Bookstore\Presentation\Controllers;
+
 use Exception;
 use Filip\Bookstore\Business\Services\BookService;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
+use Filip\Bookstore\Infrastructure\HTTP\JsonResponse;
 use Filip\Bookstore\Infrastructure\HTTP\HttpResponse;
 
 /**
@@ -188,16 +190,15 @@ class BookController {
         return $response;
     }
 
-
     // ajax metode
     /**
      * Get a list of books by author ID as a JSON response.
      *
      * @param HttpRequest $request
      * @param int $authorId
-     * @return HttpResponse
+     * @return JsonResponse
      */
-    public function getBooksByAuthorJson(HttpRequest $request, int $authorId): HttpResponse {
+    public function getBooksByAuthorJson(HttpRequest $request, int $authorId): JsonResponse {
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
         // Mapiranje podataka ako je potrebno
@@ -210,13 +211,12 @@ class BookController {
         }, $books);
 
         $jsonResponse = json_encode(['books' => $bookData]);
-        return new HttpResponse(200, [], $jsonResponse);
+        return new JsonResponse(200, [], $jsonResponse);
     }
 
-    public function addBookAjax(HttpRequest $request): HttpResponse {
+    public function addBookAjax(HttpRequest $request): JsonResponse {
         // Dobijanje JSON podataka iz tela zahteva
-        $jsonData = file_get_contents('php://input');
-        $data = json_decode($jsonData, true);
+        $data = $request->getJsonBody();
 
         $title = $data['title'] ?? null;
         $year = $data['year'] ?? null;
@@ -233,26 +233,23 @@ class BookController {
             ];
 
             $jsonResponse = json_encode(['status' => 'success', 'book' => $bookData]);
-            return new HttpResponse(200, [], $jsonResponse);
+            return new JsonResponse(200, [], $jsonResponse);
         } else {
-            $response = new HttpResponse();
-            $response->setStatusCode(400);
-            $response->json(['status' => 'error', 'message' => 'Invalid data']);
+            $response = new JsonResponse(400);
+            $response->setBody(json_encode(['status' => 'error', 'message' => 'Invalid data']));
             return $response;
         }
     }
 
-    public function deleteBookAjax(HttpRequest $request, int $bookId): HttpResponse {
+    public function deleteBookAjax(HttpRequest $request, int $bookId): JsonResponse {
         try {
             $this->bookService->deleteBook($bookId);
             $jsonResponse = json_encode(['status' => 'success']);
-            return new HttpResponse(200, [], $jsonResponse);
+            return new JsonResponse(200, [], $jsonResponse);
         } catch (Exception $e) {
-            $response = new HttpResponse();
-            $response->setStatusCode(500);
-            $response->json(['status' => 'error', 'message' => $e->getMessage()]);
+            $response = new JsonResponse(500);
+            $response->setBody(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
             return $response;
         }
     }
-
 }

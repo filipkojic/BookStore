@@ -2,7 +2,6 @@
 
 namespace Filip\Bookstore\Infrastructure\HTTP;
 
-
 use Exception;
 use Filip\Bookstore\Infrastructure\Utility\GlobalWrapper;
 
@@ -101,7 +100,7 @@ class HttpRequest
      *
      * @return int|null The ID from the URI or null if not found.
      */
-    public function getId(): ?int // u kontroleru da stoji
+    public function getId(): ?int
     {
         $urlParts = explode('/', trim($this->uri, '/'));
 
@@ -118,5 +117,16 @@ class HttpRequest
         $urlParts = explode('/', trim($this->uri, '/'));
 
         return $urlParts[0] ?? '';
+    }
+
+    /**
+     * Get the raw JSON body and decode it.
+     *
+     * @return array|null The decoded JSON body or null if decoding fails.
+     */
+    public function getJsonBody(): ?array
+    {
+        $jsonData = file_get_contents('php://input');
+        return json_decode($jsonData, true);
     }
 }

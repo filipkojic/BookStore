@@ -3,18 +3,20 @@
 namespace Filip\Bookstore\Infrastructure\HTTP;
 
 /**
- * Class HttpResponse
+ * Class JsonResponse
  *
- * Represents an HTTP response with methods to set the status code, headers, and body.
+ * Represents a JSON response with methods to set the status code, headers, and body.
  */
-class HttpResponse extends AbstractResponse
+class JsonResponse extends AbstractResponse
 {
     /**
-     * Send the HTTP response to the client.
+     * Send the JSON response to the client.
      */
     public function send(): void
     {
         http_response_code($this->statusCode);
+
+        $this->addHeader('Content-Type', 'application/json');
 
         foreach ($this->headers as $key => $value) {
             header("$key: $value");
