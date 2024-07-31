@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const data = JSON.stringify({ title, year, authorId });
         try {
-            const response = await ajaxPost(`/addBookAjax`, data);
+            const response = await ajaxPost(`/addBook`, data);
             appendBookToDOM(response.book); // Add the new book directly to the DOM
             addBookForm.classList.add("hidden");
             document.getElementById('bookTitle').value = '';
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmDeleteButton.addEventListener('click', async () => {
         if (bookIdToDelete) {
             try {
-                await ajaxDelete(`/deleteBookAjax/${bookIdToDelete}`);
+                await ajaxDelete(`/deleteBook/${bookIdToDelete}`);
                 document.querySelector(`.book-item[data-id="${bookIdToDelete}"]`).remove(); // Remove the book from the DOM
                 deleteBookDialog.classList.add('hidden');
                 bookIdToDelete = null;

@@ -40,14 +40,8 @@ switch ($page) {
     case 'books':
         $response = $bookController->getBooksByAuthor($request, $id);
         break;
-    case 'addBook':
-        $response = $bookController->create($request);
-        break;
     case 'editBook':
         $response = $bookController->edit($request, $id);
-        break;
-    case 'deleteBook':
-        $response = $bookController->delete($request, $id);
         break;
     default:
         $response = $authorController->index($request);
@@ -55,15 +49,15 @@ switch ($page) {
 
     // ajax putanje
     case 'getBooks':
-        $response = $bookController->getBooksByAuthorJson($request, $id);
+        $response = $bookController->getBooksForAuthor($request, $id);
         break;
 
-    case 'addBookAjax':
-        $response = $bookController->addBookAjax($request);
+    case 'addBook':
+        $response = $bookController->addBook($request);
         break;
 
-    case 'deleteBookAjax':
-        $response = $bookController->deleteBookAjax($request, $id);
+    case 'deleteBook':
+        $response = $bookController->deleteBook($request, $id);
         break;
 }
 

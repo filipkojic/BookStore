@@ -198,7 +198,7 @@ class BookController {
      * @param int $authorId
      * @return JsonResponse
      */
-    public function getBooksByAuthorJson(HttpRequest $request, int $authorId): JsonResponse {
+    public function getBooksForAuthor(HttpRequest $request, int $authorId): JsonResponse {
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
         // Mapiranje podataka ako je potrebno
@@ -214,7 +214,7 @@ class BookController {
         return new JsonResponse(200, [], $jsonResponse);
     }
 
-    public function addBookAjax(HttpRequest $request): JsonResponse {
+    public function addBook(HttpRequest $request): JsonResponse {
         // Dobijanje JSON podataka iz tela zahteva
         $data = $request->getJsonBody();
 
@@ -241,7 +241,7 @@ class BookController {
         }
     }
 
-    public function deleteBookAjax(HttpRequest $request, int $bookId): JsonResponse {
+    public function deleteBook(HttpRequest $request, int $bookId): JsonResponse {
         try {
             $this->bookService->deleteBook($bookId);
             $jsonResponse = json_encode(['status' => 'success']);
