@@ -1,10 +1,102 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const bookList = document.querySelector('.book-list');
+    const container = document.getElementById('bookContainer');
 
     // Extract authorId from URL
     const urlPath = window.location.pathname;
     const pathParts = urlPath.split('/');
     const authorId = pathParts[pathParts.length - 1];
+
+    // Function to create and append a new element
+    function createElement(tag, attributes = {}, textContent = '') {
+        const element = document.createElement(tag);
+        for (const [key, value] of Object.entries(attributes)) {
+            element.setAttribute(key, value);
+        }
+        if (textContent) {
+            element.textContent = textContent;
+        }
+        return element;
+    }
+
+    // Creating header
+    const header = createElement('h1', { id: 'head1' }, 'Book List');
+    container.appendChild(header);
+
+    // Creating container2 div
+    const container2 = createElement('div', { class: 'container2' });
+    const bookLabel = createElement('div', { class: 'book' }, 'Book');
+    const actionsLabel = createElement('div', { class: 'actions' }, 'Actions');
+    container2.appendChild(bookLabel);
+    container2.appendChild(actionsLabel);
+    container.appendChild(container2);
+
+    // Adding a horizontal rule
+    container.appendChild(createElement('hr'));
+
+    // Creating the book-list div
+    const bookList = createElement('div', { class: 'book-list' });
+    container.appendChild(bookList);
+
+    // Adding another horizontal rule
+    container.appendChild(createElement('hr'));
+
+    // Creating the add-book div
+    const addBookDiv = createElement('div', { class: 'add-book' });
+    const addBookButton = createElement('button', { id: 'showAddBookForm' }, '+');
+    addBookDiv.appendChild(addBookButton);
+    container.appendChild(addBookDiv);
+
+    // Creating the addBookForm modal
+    const addBookForm = createElement('div', { id: 'addBookForm', class: 'modal hidden' });
+    const addBookFormContent = createElement('div', { class: 'modal-content' });
+    addBookFormContent.appendChild(createElement('span', { class: 'close-button', id: 'closeAddBookForm' }, '×'));
+    addBookFormContent.appendChild(createElement('h2', {}, 'Add Book'));
+    addBookFormContent.appendChild(createElement('hr'));
+
+    const form = createElement('form');
+    form.appendChild(createElement('input', { type: 'hidden', name: 'authorId', id: 'authorId', value: authorId }));
+    form.appendChild(createElement('label', { for: 'bookTitle' }, 'Title'));
+    form.appendChild(createElement('input', { type: 'text', id: 'bookTitle', name: 'title' }));
+    form.appendChild(createElement('span', { id: 'titleError', class: 'error-message' }));
+    form.appendChild(createElement('label', { for: 'bookYear' }, 'Year'));
+    form.appendChild(createElement('input', { type: 'text', id: 'bookYear', name: 'year' }));
+    form.appendChild(createElement('span', { id: 'yearError', class: 'error-message' }));
+
+    const buttonContainer = createElement('div', { class: 'button-container' });
+    const saveBookButton = createElement('button', { type: 'button', id: 'saveBookButton' }, 'Save');
+    buttonContainer.appendChild(saveBookButton);
+    form.appendChild(buttonContainer);
+
+    addBookFormContent.appendChild(form);
+    addBookForm.appendChild(addBookFormContent);
+    container.appendChild(addBookForm);
+
+    // Creating the deleteBookDialog modal
+    const deleteBookDialog = createElement('div', { id: 'deleteBookDialog', class: 'modal hidden' });
+    const deleteBookDialogContent = createElement('div', { class: 'modal-content' });
+    deleteBookDialogContent.appendChild(createElement('span', { class: 'close-button', id: 'closeDeleteBookDialog' }, '×'));
+
+    const dialogHeader = createElement('div', { class: 'dialog-header' });
+    dialogHeader.appendChild(createElement('h2', {}, 'Delete Book'));
+    deleteBookDialogContent.appendChild(dialogHeader);
+
+    const dialogBody = createElement('div', { class: 'dialog-body' });
+    const deleteBookMessage = createElement('p', { id: 'deleteBookMessage' }, 'You are about to delete the book ');
+    const bookTitleElement = createElement('strong', { id: 'bookTitle' }, '');
+    deleteBookMessage.appendChild(bookTitleElement);
+    deleteBookMessage.appendChild(document.createTextNode('. If you proceed with this action, the application will permanently delete this book.'));
+    dialogBody.appendChild(deleteBookMessage);
+    deleteBookDialogContent.appendChild(dialogBody);
+
+    const dialogFooter = createElement('div', { class: 'dialog-footer' });
+    const confirmDeleteButton = createElement('button', { id: 'confirmDeleteButton', class: 'delete-button' }, 'Delete');
+    const cancelDeleteButton = createElement('button', { type: 'button', class: 'cancel-button', id: 'cancelDeleteButton' }, 'Cancel');
+    dialogFooter.appendChild(confirmDeleteButton);
+    dialogFooter.appendChild(cancelDeleteButton);
+    deleteBookDialogContent.appendChild(dialogFooter);
+
+    deleteBookDialog.appendChild(deleteBookDialogContent);
+    container.appendChild(deleteBookDialog);
 
     /**
      * Load books for the current author from the server.
@@ -73,13 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     }
 
-    const showAddBookFormButton = document.getElementById('showAddBookForm');
-    const addBookForm = document.getElementById('addBookForm');
-    const saveBookButton = document.getElementById('saveBookButton');
-    const closeAddBookForm = document.getElementById('closeAddBookForm');
-
     // Show the add book form when the "+" button is clicked
-    showAddBookFormButton.addEventListener('click', () => {
+    addBookButton.addEventListener('click', () => {
         addBookForm.classList.remove('hidden');
     });
 
@@ -110,13 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const deleteBookDialog = document.getElementById('deleteBookDialog');
-    const deleteBookMessage = document.getElementById('deleteBookMessage');
-    const confirmDeleteButton = document.getElementById('confirmDeleteButton');
-    const cancelDeleteButton = document.getElementById('cancelDeleteButton');
-    const closeDeleteBookDialog = document.getElementById('closeDeleteBookDialog');
-    let bookIdToDelete = null;
-
     /**
      * Handle the book list click event to show the delete confirmation dialog.
      */
@@ -124,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target.classList.contains('delete')) {
             bookIdToDelete = event.target.dataset.id;
             const bookTitle = event.target.dataset.title;
-            deleteBookMessage.querySelector('strong').textContent = bookTitle;
+            document.querySelector('#deleteBookMessage strong').textContent = bookTitle;
             deleteBookDialog.classList.remove('hidden');
         }
     });
