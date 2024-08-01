@@ -18,11 +18,11 @@ class DatabaseConnection extends Singleton
     {
         parent::__construct();
         try {
-            $dbHost = $_ENV['DB_HOST'];
-            $dbPort = $_ENV['DB_PORT'];
-            $dbDatabase = $_ENV['DB_DATABASE'];
-            $dbUsername = $_ENV['DB_USERNAME'];
-            $dbPassword = $_ENV['DB_PASSWORD'];
+            $dbHost = getenv('DB_HOST');
+            $dbPort = getenv('DB_PORT');
+            $dbDatabase = getenv('DB_DATABASE');
+            $dbUsername = getenv('DB_USERNAME');
+            $dbPassword = getenv('DB_PASSWORD');
 
             $this->connection = new PDO("mysql:host=$dbHost;port=$dbPort;dbname=$dbDatabase", $dbUsername, $dbPassword);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
