@@ -9,6 +9,26 @@ namespace Filip\Bookstore\Infrastructure\HTTP;
  */
 class HttpResponse extends AbstractResponse
 {
+
+    /**
+     * Set the body of the response using a view file.
+     *
+     * @param string $viewFile The path to the view file.
+     * @param array $data Data to be extracted and passed to the view.
+     */
+    public function setBodyFromView(string $viewFile, array $data = []): void
+    {
+        // Extract data to variables
+        extract($data);
+
+        // Capture the output of the view file
+        ob_start();
+        include $viewFile;
+        $content = ob_get_clean();
+
+        $this->setBody($content);
+    }
+
     /**
      * Send the HTTP response to the client.
      */

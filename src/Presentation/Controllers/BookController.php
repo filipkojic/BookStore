@@ -33,12 +33,8 @@ class BookController {
     public function index(HttpRequest $request): HttpResponse {
         $books = $this->bookService->getAllBooks();
 
-        ob_start();
-        include __DIR__ . '/../Views/bookList.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/bookList.php', ['books' => $books]);
         return $response;
     }
 
@@ -52,12 +48,8 @@ class BookController {
     public function getBooksByAuthor(HttpRequest $request, int $authorId): HttpResponse {
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
-        ob_start();
-        include __DIR__ . '/../Views/bookList.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/bookList.php', ['books' => $books, 'authorId' => $authorId]);
         return $response;
     }
 
@@ -105,12 +97,15 @@ class BookController {
             }
         }
 
-        ob_start();
-        include __DIR__ . '/../Views/editBook.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/editBook.php', [
+            'nameError' => $nameError,
+            'yearError' => $yearError,
+            'name' => $name,
+            'year' => $year,
+            'authorId' => $authorId,
+            'book' => $book
+        ]);
         return $response;
     }
 

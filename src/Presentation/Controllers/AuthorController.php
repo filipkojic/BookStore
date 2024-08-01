@@ -35,12 +35,8 @@ class AuthorController {
             $author->setBookCount($bookCount);
         }
 
-        ob_start();
-        include __DIR__ . '/../Views/authorList.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
         return $response;
     }
 
@@ -83,12 +79,13 @@ class AuthorController {
             }
         }
 
-        ob_start();
-        include __DIR__ . '/../Views/addAuthor.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/addAuthor.php', [
+            'firstNameError' => $firstNameError,
+            'lastNameError' => $lastNameError,
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ]);
         return $response;
     }
 
@@ -134,12 +131,14 @@ class AuthorController {
             }
         }
 
-        ob_start();
-        include __DIR__ . '/../Views/editAuthor.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/editAuthor.php', [
+            'author' => $author,
+            'firstNameError' => $firstNameError,
+            'lastNameError' => $lastNameError,
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        ]);
         return $response;
     }
 
@@ -160,12 +159,8 @@ class AuthorController {
         }
         $author = $this->authorService->getAuthorById($id);
 
-        ob_start();
-        include __DIR__ . '/../Views/deleteAuthor.php';
-        $content = ob_get_clean();
-
         $response = new HttpResponse();
-        $response->setBody($content);
+        $response->setBodyFromView(__DIR__ . '/../Views/deleteAuthor.php', ['author' => $author]);
         return $response;
     }
 }
