@@ -5,30 +5,20 @@ namespace Filip\Bookstore\Presentation\Controllers;
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
 use Filip\Bookstore\Infrastructure\HTTP\Response\HtmlResponse;
+use Filip\Bookstore\Presentation\Models\AuthorInput;
+use Exception;
 
-/**
- * Class AuthorController
- *
- * This class handles author-related operations.
- */
 class AuthorController {
 
-    /**
-     * AuthorController constructor.
-     *
-     * @param AuthorService $authorService
-     */
-    public function __construct(
-        private AuthorService $authorService
-    ) {}
+    private AuthorService $authorService;
 
-    /**
-     * Display a list of all authors.
-     *
-     * @param HttpRequest $request
-     * @return HtmlResponse
-     */
-    public function index(HttpRequest $request): HtmlResponse {
+    public function __construct(AuthorService $authorService)
+    {
+        $this->authorService = $authorService;
+    }
+
+    public function index(HttpRequest $request): HtmlResponse
+    {
         $authors = $this->authorService->getAllAuthors();
         foreach ($authors as $author) {
             $bookCount = $this->authorService->getBookCountByAuthorId($author->getId());
@@ -38,39 +28,29 @@ class AuthorController {
         return HtmlResponse::fromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
     }
 
-    /**
-     * Create a new author.
-     *
-     * @param HttpRequest $request
-     * @return HtmlResponse
-     */
-    public function create(HttpRequest $request): HtmlResponse {
+    public function create(HttpRequest $request): HtmlResponse
+    {
         $firstNameError = $lastNameError = "";
         $firstName = $lastName = "";
 
         if ($request->getMethod() === "POST") {
-            $firstName = $request->getBodyParam("firstName");
-            $lastName = $request->getBodyParam("lastName");
+            try {
+                $authorInput = new AuthorInput(
+                    null,
+                    $request->getBodyParam("firstName"),
+                    $request->getBodyParam("lastName")
+                );
 
-            if (empty($firstName)) {
-                $firstNameError = "* This field is required";
-            } elseif (strlen($firstName) > 100) {
-                $firstNameError = "* First name must be less than 100 characters";
-            } else {
-                $firstName = htmlspecialchars($firstName);
-            }
-
-            if (empty($lastName)) {
-                $lastNameError = "* This field is required";
-            } elseif (strlen($lastName) > 100) {
-                $lastNameError = "* Last name must be less than 100 characters";
-            } else {
-                $lastName = htmlspecialchars($lastName);
-            }
-
-            if (empty($firstNameError) && empty($lastNameError)) {
-                $this->authorService->addAuthor($firstName, $lastName);
+                $this->authorService->addAuthor($authorInput->getFirstName(), $authorInput->getLastName());
                 return new HtmlResponse(302, ['Location' => '/index.php']);
+            } catch (Exception $e) {
+                $errors = json_decode($e->getMessage(), true);
+                if (isset($errors['firstName'])) {
+                    $firstNameError = $errors['firstName'];
+                }
+                if (isset($errors['lastName'])) {
+                    $lastNameError = $errors['lastName'];
+                }
             }
         }
 
@@ -82,13 +62,8 @@ class AuthorController {
         ]);
     }
 
-    /**
-     * Edit an existing author.
-     *
-     * @param HttpRequest $request
-     * @return HtmlResponse
-     */
-    public function edit(HttpRequest $request): HtmlResponse {
+    public function edit(HttpRequest $request): HtmlResponse
+    {
         $id = $request->getId();
         $author = $this->authorService->getAuthorById($id);
         $firstNameError = $lastNameError = "";
@@ -96,28 +71,24 @@ class AuthorController {
         $lastName = $author->getLastName();
 
         if ($request->getMethod() === "POST") {
-            $firstName = $request->getBodyParam("firstName");
-            $lastName = $request->getBodyParam("lastName");
+            try {
+                $authorInput = new AuthorInput(
+                    $id,
+                    $request->getBodyParam("firstName"),
+                    $request->getBodyParam("lastName"),
+                    $author->getBookCount()
+                );
 
-            if (empty($firstName)) {
-                $firstNameError = "* This field is required";
-            } elseif (strlen($firstName) > 100) {
-                $firstNameError = "* First name must be less than 100 characters";
-            } else {
-                $firstName = htmlspecialchars($firstName);
-            }
-
-            if (empty($lastName)) {
-                $lastNameError = "* This field is required";
-            } elseif (strlen($lastName) > 100) {
-                $lastNameError = "* Last name must be less than 100 characters";
-            } else {
-                $lastName = htmlspecialchars($lastName);
-            }
-
-            if (empty($firstNameError) && empty($lastNameError)) {
-                $this->authorService->updateAuthor($id, $firstName, $lastName);
+                $this->authorService->updateAuthor($id, $authorInput->getFirstName(), $authorInput->getLastName());
                 return new HtmlResponse(302, ['Location' => '/authorList.php']);
+            } catch (Exception $e) {
+                $errors = json_decode($e->getMessage(), true);
+                if (isset($errors['firstName'])) {
+                    $firstNameError = $errors['firstName'];
+                }
+                if (isset($errors['lastName'])) {
+                    $lastNameError = $errors['lastName'];
+                }
             }
         }
 
@@ -130,13 +101,8 @@ class AuthorController {
         ]);
     }
 
-    /**
-     * Delete an author.
-     *
-     * @param HttpRequest $request
-     * @return HtmlResponse
-     */
-    public function delete(HttpRequest $request): HtmlResponse {
+    public function delete(HttpRequest $request): HtmlResponse
+    {
         $id = $request->getId();
         if ($request->getMethod() === "POST") {
             $this->authorService->deleteAuthor($id);
