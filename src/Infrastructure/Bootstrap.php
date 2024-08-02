@@ -27,9 +27,8 @@ class Bootstrap
     {
         $registry = ServiceRegistry::getInstance();
 
-        $dbConnection = DatabaseConnection::getInstance()->getConnection();
-        $authorRepository = new SQLAuthorRepository($dbConnection);
-        $bookRepository = new SQLBookRepository($dbConnection);
+        $authorRepository = new SQLAuthorRepository();
+        $bookRepository = new SQLBookRepository();
 
         $authorService = new AuthorService($authorRepository, $bookRepository);
         $bookService = new BookService($bookRepository, $authorRepository);

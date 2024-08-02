@@ -3,6 +3,7 @@
 namespace Filip\Bookstore\Data\Repositories\Sql;
 
 use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
 use Filip\Bookstore\Presentation\Models\Author;
 use PDO;
 
@@ -13,16 +14,9 @@ use PDO;
  */
 class SqlAuthorRepository implements AuthorRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct(PDO $connection)
-    {
-        $this->connection = $connection;
-    }
-
     public function getAll(): array
     {
-        $stmt = $this->connection->query("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
+        $stmt = DatabaseConnection::getInstance()->getConnection()->query("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
                                           FROM Authors a
                                           LEFT JOIN Books b ON a.id = b.authorId
                                           GROUP BY a.id, a.firstName, a.lastName");
@@ -35,7 +29,7 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
 
     public function getById(int $id): ?Author
     {
-        $stmt = $this->connection->prepare("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
+        $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
                                             FROM Authors a
                                             LEFT JOIN Books b ON a.id = b.authorId
                                             WHERE a.id = :id
@@ -47,22 +41,22 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
 
     public function create(string $firstName, string $lastName): Author
     {
-        $stmt = $this->connection->prepare("INSERT INTO Authors (firstName, lastName) VALUES (:firstName, :lastName)");
+        $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("INSERT INTO Authors (firstName, lastName) VALUES (:firstName, :lastName)");
         $stmt->execute(['firstName' => $firstName, 'lastName' => $lastName]);
-        $id = $this->connection->lastInsertId();
+        $id = DatabaseConnection::getInstance()->getConnection()->lastInsertId();
         return new Author($id, $firstName, $lastName);
     }
 
     public function update(int $id, string $firstName, string $lastName): ?Author
     {
-        $stmt = $this->connection->prepare("UPDATE Authors SET firstName = :firstName, lastName = :lastName WHERE id = :id");
+        $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("UPDATE Authors SET firstName = :firstName, lastName = :lastName WHERE id = :id");
         $stmt->execute(['firstName' => $firstName, 'lastName' => $lastName, 'id' => $id]);
         return $this->getById($id);
     }
 
     public function delete(int $id): bool
     {
-        $stmt = $this->connection->prepare("DELETE FROM Authors WHERE id = :id");
+        $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("DELETE FROM Authors WHERE id = :id");
         return $stmt->execute(['id' => $id]);
     }
 }
