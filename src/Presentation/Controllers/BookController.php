@@ -40,10 +40,10 @@ class BookController {
      * Display a list of books by author ID.
      *
      * @param HttpRequest $request
-     * @param int $authorId Author ID.
      * @return HtmlResponse
      */
-    public function getBooksByAuthor(HttpRequest $request, int $authorId): HtmlResponse {
+    public function getBooksByAuthor(HttpRequest $request): HtmlResponse {
+        $authorId = $request->getId();
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
         return HtmlResponse::fromView(__DIR__ . '/../Views/bookList.php', ['books' => $books, 'authorId' => $authorId]);
@@ -53,10 +53,10 @@ class BookController {
      * Edit an existing book.
      *
      * @param HttpRequest $request
-     * @param int $id Book ID.
      * @return HtmlResponse
      */
-    public function edit(HttpRequest $request, int $id): HtmlResponse {
+    public function edit(HttpRequest $request): HtmlResponse {
+        $id = $request->getId();
         $book = $this->bookService->getBookById($id);
         $nameError = $yearError = "";
         $name = $book->getName();
@@ -104,10 +104,10 @@ class BookController {
      * Get a list of books by author ID as a JSON response.
      *
      * @param HttpRequest $request
-     * @param int $authorId
      * @return JsonResponse
      */
-    public function getBooksForAuthor(HttpRequest $request, int $authorId): JsonResponse {
+    public function getBooksForAuthor(HttpRequest $request): JsonResponse {
+        $authorId = $request->getId();
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
         // Mapiranje podataka ako je potrebno
@@ -146,7 +146,8 @@ class BookController {
         }
     }
 
-    public function deleteBook(HttpRequest $request, int $bookId): JsonResponse {
+    public function deleteBook(HttpRequest $request): JsonResponse {
+        $bookId = $request->getId();
         try {
             $this->bookService->deleteBook($bookId);
             return new JsonResponse(200, [], ['status' => 'success']);

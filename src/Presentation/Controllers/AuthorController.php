@@ -86,10 +86,10 @@ class AuthorController {
      * Edit an existing author.
      *
      * @param HttpRequest $request
-     * @param int $id Author ID.
      * @return HtmlResponse
      */
-    public function edit(HttpRequest $request, int $id): HtmlResponse {
+    public function edit(HttpRequest $request): HtmlResponse {
+        $id = $request->getId();
         $author = $this->authorService->getAuthorById($id);
         $firstNameError = $lastNameError = "";
         $firstName = $author->getFirstName();
@@ -134,10 +134,10 @@ class AuthorController {
      * Delete an author.
      *
      * @param HttpRequest $request
-     * @param int $id Author ID.
      * @return HtmlResponse
      */
-    public function delete(HttpRequest $request, int $id): HtmlResponse {
+    public function delete(HttpRequest $request): HtmlResponse {
+        $id = $request->getId();
         if ($request->getMethod() === "POST") {
             $this->authorService->deleteAuthor($id);
             return new HtmlResponse(302, ['Location' => '/index.php']);

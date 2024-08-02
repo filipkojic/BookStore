@@ -25,7 +25,6 @@ $request = new HttpRequest();
 $response = null;
 
 $page = $request->getPath();
-$id = $request->getId();
 
 switch ($page) {
     case 'authors':
@@ -35,16 +34,16 @@ switch ($page) {
         $response = $authorController->create($request);
         break;
     case 'editAuthor':
-        $response = $authorController->edit($request, $id);
+        $response = $authorController->edit($request);
         break;
     case 'deleteAuthor':
-        $response = $authorController->delete($request, $id);
+        $response = $authorController->delete($request);
         break;
     case 'books':
-        $response = $bookController->getBooksByAuthor($request, $id);
+        $response = $bookController->getBooksByAuthor($request);
         break;
     case 'editBook':
-        $response = $bookController->edit($request, $id);
+        $response = $bookController->edit($request);
         break;
     default:
         $response = $authorController->index($request);
@@ -52,7 +51,7 @@ switch ($page) {
 
     // ajax putanje
     case 'getBooks':
-        $response = $bookController->getBooksForAuthor($request, $id);
+        $response = $bookController->getBooksForAuthor($request);
         break;
 
     case 'addBook':
@@ -60,8 +59,8 @@ switch ($page) {
         break;
 
     case 'deleteBook':
-        $response = $bookController->deleteBook($request, $id);
+        $response = $bookController->deleteBook($request);
         break;
 }
 
-    $response->send();
+$response->send();

@@ -102,7 +102,7 @@ class HttpRequest
      */
     public function getId(): ?int
     {
-        $urlParts = explode('/', trim($this->uri, '/'));
+        $urlParts = explode('/', trim($this->getUri(), '/'));
 
         return isset($urlParts[1]) ? (int)$urlParts[1] : null;
     }
