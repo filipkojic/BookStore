@@ -4,7 +4,7 @@ namespace Filip\Bookstore\Presentation\Controllers;
 
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
-use Filip\Bookstore\Infrastructure\HTTP\HttpResponse;
+use Filip\Bookstore\Infrastructure\HTTP\Response\HtmlResponse;
 
 /**
  * Class AuthorController
@@ -26,27 +26,25 @@ class AuthorController {
      * Display a list of all authors.
      *
      * @param HttpRequest $request
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function index(HttpRequest $request): HttpResponse {
+    public function index(HttpRequest $request): HtmlResponse {
         $authors = $this->authorService->getAllAuthors();
         foreach ($authors as $author) {
             $bookCount = $this->authorService->getBookCountByAuthorId($author->getId());
             $author->setBookCount($bookCount);
         }
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
-        return $response;
+        return HtmlResponse::fromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
     }
 
     /**
      * Create a new author.
      *
      * @param HttpRequest $request
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function create(HttpRequest $request): HttpResponse {
+    public function create(HttpRequest $request): HtmlResponse {
         $firstNameError = $lastNameError = "";
         $firstName = $lastName = "";
 
@@ -72,21 +70,16 @@ class AuthorController {
 
             if (empty($firstNameError) && empty($lastNameError)) {
                 $this->authorService->addAuthor($firstName, $lastName);
-                $response = new HttpResponse();
-                $response->setStatusCode(302);
-                $response->addHeader('Location', '/index.php');
-                return $response;
+                return new HtmlResponse(302, ['Location' => '/index.php']);
             }
         }
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/addAuthor.php', [
+        return HtmlResponse::fromView(__DIR__ . '/../Views/addAuthor.php', [
             'firstNameError' => $firstNameError,
             'lastNameError' => $lastNameError,
             'firstName' => $firstName,
             'lastName' => $lastName
         ]);
-        return $response;
     }
 
     /**
@@ -94,9 +87,9 @@ class AuthorController {
      *
      * @param HttpRequest $request
      * @param int $id Author ID.
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function edit(HttpRequest $request, int $id): HttpResponse {
+    public function edit(HttpRequest $request, int $id): HtmlResponse {
         $author = $this->authorService->getAuthorById($id);
         $firstNameError = $lastNameError = "";
         $firstName = $author->getFirstName();
@@ -124,22 +117,17 @@ class AuthorController {
 
             if (empty($firstNameError) && empty($lastNameError)) {
                 $this->authorService->updateAuthor($id, $firstName, $lastName);
-                $response = new HttpResponse();
-                $response->setStatusCode(302);
-                $response->addHeader('Location', '/authorList.php');
-                return $response;
+                return new HtmlResponse(302, ['Location' => '/authorList.php']);
             }
         }
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/editAuthor.php', [
+        return HtmlResponse::fromView(__DIR__ . '/../Views/editAuthor.php', [
             'author' => $author,
             'firstNameError' => $firstNameError,
             'lastNameError' => $lastNameError,
             'firstName' => $firstName,
             'lastName' => $lastName
         ]);
-        return $response;
     }
 
     /**
@@ -147,20 +135,15 @@ class AuthorController {
      *
      * @param HttpRequest $request
      * @param int $id Author ID.
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function delete(HttpRequest $request, int $id): HttpResponse {
+    public function delete(HttpRequest $request, int $id): HtmlResponse {
         if ($request->getMethod() === "POST") {
             $this->authorService->deleteAuthor($id);
-            $response = new HttpResponse();
-            $response->setStatusCode(302);
-            $response->addHeader('Location', '/index.php');
-            return $response;
+            return new HtmlResponse(302, ['Location' => '/index.php']);
         }
         $author = $this->authorService->getAuthorById($id);
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/deleteAuthor.php', ['author' => $author]);
-        return $response;
+        return HtmlResponse::fromView(__DIR__ . '/../Views/deleteAuthor.php', ['author' => $author]);
     }
 }

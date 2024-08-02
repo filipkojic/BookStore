@@ -5,8 +5,8 @@ namespace Filip\Bookstore\Presentation\Controllers;
 use Exception;
 use Filip\Bookstore\Business\Services\BookService;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
-use Filip\Bookstore\Infrastructure\HTTP\JsonResponse;
-use Filip\Bookstore\Infrastructure\HTTP\HttpResponse;
+use Filip\Bookstore\Infrastructure\HTTP\Response\HtmlResponse;
+use Filip\Bookstore\Infrastructure\HTTP\Response\JsonResponse;
 
 /**
  * Class BookController
@@ -28,14 +28,12 @@ class BookController {
      * Display a list of all books.
      *
      * @param HttpRequest $request
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function index(HttpRequest $request): HttpResponse {
+    public function index(HttpRequest $request): HtmlResponse {
         $books = $this->bookService->getAllBooks();
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/bookList.php', ['books' => $books]);
-        return $response;
+        return HtmlResponse::fromView(__DIR__ . '/../Views/bookList.php', ['books' => $books]);
     }
 
     /**
@@ -43,25 +41,22 @@ class BookController {
      *
      * @param HttpRequest $request
      * @param int $authorId Author ID.
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function getBooksByAuthor(HttpRequest $request, int $authorId): HttpResponse {
+    public function getBooksByAuthor(HttpRequest $request, int $authorId): HtmlResponse {
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/bookList.php', ['books' => $books, 'authorId' => $authorId]);
-        return $response;
+        return HtmlResponse::fromView(__DIR__ . '/../Views/bookList.php', ['books' => $books, 'authorId' => $authorId]);
     }
-
 
     /**
      * Edit an existing book.
      *
      * @param HttpRequest $request
      * @param int $id Book ID.
-     * @return HttpResponse
+     * @return HtmlResponse
      */
-    public function edit(HttpRequest $request, int $id): HttpResponse {
+    public function edit(HttpRequest $request, int $id): HtmlResponse {
         $book = $this->bookService->getBookById($id);
         $nameError = $yearError = "";
         $name = $book->getName();
@@ -90,15 +85,11 @@ class BookController {
 
             if (empty($nameError) && empty($yearError)) {
                 $this->bookService->updateBook($id, $name, $year);
-                $response = new HttpResponse();
-                $response->setStatusCode(302);
-                $response->addHeader('Location', '/books/' . $authorId);
-                return $response;
+                return new HtmlResponse(302, ['Location' => '/books/' . $authorId]);
             }
         }
 
-        $response = new HttpResponse();
-        $response->setBodyFromView(__DIR__ . '/../Views/editBook.php', [
+        return HtmlResponse::fromView(__DIR__ . '/../Views/editBook.php', [
             'nameError' => $nameError,
             'yearError' => $yearError,
             'name' => $name,
@@ -106,10 +97,9 @@ class BookController {
             'authorId' => $authorId,
             'book' => $book
         ]);
-        return $response;
     }
 
-        // ajax metode
+    // ajax metode
     /**
      * Get a list of books by author ID as a JSON response.
      *
@@ -129,8 +119,7 @@ class BookController {
             ];
         }, $books);
 
-        $jsonResponse = json_encode(['books' => $bookData]);
-        return new JsonResponse(200, [], $jsonResponse);
+        return new JsonResponse(200, [], ['books' => $bookData]);
     }
 
     public function addBook(HttpRequest $request): JsonResponse {
@@ -151,24 +140,18 @@ class BookController {
                 'authorId' => $book->getAuthorId()
             ];
 
-            $jsonResponse = json_encode(['status' => 'success', 'book' => $bookData]);
-            return new JsonResponse(200, [], $jsonResponse);
+            return new JsonResponse(200, [], ['status' => 'success', 'book' => $bookData]);
         } else {
-            $response = new JsonResponse(400);
-            $response->setBody(json_encode(['status' => 'error', 'message' => 'Invalid data']));
-            return $response;
+            return new JsonResponse(400, [], ['status' => 'error', 'message' => 'Invalid data']);
         }
     }
 
     public function deleteBook(HttpRequest $request, int $bookId): JsonResponse {
         try {
             $this->bookService->deleteBook($bookId);
-            $jsonResponse = json_encode(['status' => 'success']);
-            return new JsonResponse(200, [], $jsonResponse);
+            return new JsonResponse(200, [], ['status' => 'success']);
         } catch (Exception $e) {
-            $response = new JsonResponse(500);
-            $response->setBody(json_encode(['status' => 'error', 'message' => $e->getMessage()]));
-            return $response;
+            return new JsonResponse(500, [], ['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 }

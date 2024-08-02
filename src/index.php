@@ -3,7 +3,6 @@
 use Dotenv\Dotenv;
 use Filip\Bookstore\Infrastructure\Bootstrap;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
-use Filip\Bookstore\Infrastructure\HTTP\AbstractResponse;
 use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
