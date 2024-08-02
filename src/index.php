@@ -8,7 +8,15 @@ use Filip\Bookstore\Presentation\Controllers\BookController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-Bootstrap::initialize();
+try {
+    Bootstrap::initialize();
+} catch (Exception $e) {
+    // Handle the initialization error, log it, or display a user-friendly message
+    error_log("Error during Bootstrap initialization: " . $e->getMessage());
+    echo "An error occurred during initialization. Please try again later.";
+    exit;
+}
+
 
 /** @var AuthorController $authorController */
 $authorController = ServiceRegistry::getInstance()->get(AuthorController::class);
