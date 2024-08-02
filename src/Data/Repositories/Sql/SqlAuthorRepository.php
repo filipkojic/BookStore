@@ -1,10 +1,10 @@
 <?php
 
-namespace Filip\Bookstore\Data\Repositories;
+namespace Filip\Bookstore\Data\Repositories\Sql;
 
 use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
-use PDO;
 use Filip\Bookstore\Presentation\Models\Author;
+use PDO;
 
 /**
  * Class SQLAuthorRepository

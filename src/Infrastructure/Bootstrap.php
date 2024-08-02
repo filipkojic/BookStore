@@ -6,10 +6,10 @@ use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
 use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Business\Services\BookService;
-use Filip\Bookstore\Data\Repositories\SqlAuthorRepository;
-use Filip\Bookstore\Data\Repositories\SqlBookRepository;
-use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
+use Filip\Bookstore\Data\Repositories\Sql\SqlAuthorRepository;
+use Filip\Bookstore\Data\Repositories\Sql\SqlBookRepository;
 use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
+use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Filip\Bookstore\Data\Repositories;
+namespace Filip\Bookstore\Data\Repositories\Session;
 
 use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
 use Filip\Bookstore\Infrastructure\Utility\SessionManager;
