@@ -1,6 +1,5 @@
 <?php
 
-use Dotenv\Dotenv;
 use Filip\Bookstore\Infrastructure\Bootstrap;
 use Filip\Bookstore\Infrastructure\HTTP\HttpRequest;
 use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
@@ -9,17 +8,12 @@ use Filip\Bookstore\Presentation\Controllers\BookController;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/..');
-$dotenv->load();
-
 Bootstrap::initialize();
 
-$registry = ServiceRegistry::getInstance();
-
 /** @var AuthorController $authorController */
-$authorController = $registry->get(AuthorController::class);
+$authorController = ServiceRegistry::getInstance()->get(AuthorController::class);
 /** @var BookController $bookController */
-$bookController = $registry->get(BookController::class);
+$bookController = ServiceRegistry::getInstance()->get(BookController::class);
 
 $request = new HttpRequest();
 $response = null;

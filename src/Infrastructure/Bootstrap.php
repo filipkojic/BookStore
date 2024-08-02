@@ -6,12 +6,15 @@ use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
 use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Business\Services\BookService;
+use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
 use Filip\Bookstore\Data\Repositories\Sql\SqlAuthorRepository;
 use Filip\Bookstore\Data\Repositories\Sql\SqlBookRepository;
-use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
 use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
+use Dotenv\Dotenv;
+use Exception;
 
 /**
  * Class Bootstrap
@@ -22,23 +25,61 @@ class Bootstrap
 {
     /**
      * Initialize and register all services and controllers.
+     *
+     * @throws Exception
      */
     public static function initialize(): void
     {
-        $registry = ServiceRegistry::getInstance();
+        // Load environment variables
+        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
+        $dotenv->load();
 
-        $authorRepository = new SQLAuthorRepository();
-        $bookRepository = new SQLBookRepository();
+        self::registerRepos();
+        self::registerServices();
+        self::registerControllers();
+    }
 
-        $authorService = new AuthorService($authorRepository, $bookRepository);
-        $bookService = new BookService($bookRepository, $authorRepository);
+    /**
+     * Registers repository instances with the service registry.
+     * @return void
+     */
+    protected static function registerRepos(): void
+    {
+        ServiceRegistry::getInstance()->register(AuthorRepositoryInterface::class, new SqlAuthorRepository());
+        ServiceRegistry::getInstance()->register(BookRepositoryInterface::class, new SqlBookRepository());
+    }
 
-        $authorController = new AuthorController($authorService);
-        $bookController = new BookController($bookService);
+    /**
+     * Registers service instances with the service registry.
+     * @return void
+     *
+     * @throws Exception
+     */
+    protected static function registerServices(): void
+    {
+        ServiceRegistry::getInstance()->register(AuthorServiceInterface::class, new AuthorService(
+            ServiceRegistry::getInstance()->get(AuthorRepositoryInterface::class),
+            ServiceRegistry::getInstance()->get(BookRepositoryInterface::class)
+        ));
+        ServiceRegistry::getInstance()->register(BookServiceInterface::class, new BookService(
+            ServiceRegistry::getInstance()->get(BookRepositoryInterface::class),
+            ServiceRegistry::getInstance()->get(AuthorRepositoryInterface::class)
+        ));
+    }
 
-        $registry->register(AuthorServiceInterface::class, $authorService);
-        $registry->register(BookServiceInterface::class, $bookService);
-        $registry->register(AuthorController::class, $authorController);
-        $registry->register(BookController::class, $bookController);
+    /**
+     * Registers controller instances with the service registry.
+     * @return void
+     *
+     * @throws Exception
+     */
+    protected static function registerControllers(): void
+    {
+        ServiceRegistry::getInstance()->register(AuthorController::class, new AuthorController(
+            ServiceRegistry::getInstance()->get(AuthorServiceInterface::class)
+        ));
+        ServiceRegistry::getInstance()->register(BookController::class, new BookController(
+            ServiceRegistry::getInstance()->get(BookServiceInterface::class)
+        ));
     }
 }
