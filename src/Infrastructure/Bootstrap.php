@@ -2,19 +2,19 @@
 
 namespace Filip\Bookstore\Infrastructure;
 
-use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
-use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
+use Dotenv\Dotenv;
+use Exception;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\ServiceInterfaces\AuthorServiceInterface;
+use Filip\Bookstore\Business\Interfaces\ServiceInterfaces\BookServiceInterface;
 use Filip\Bookstore\Business\Services\AuthorService;
 use Filip\Bookstore\Business\Services\BookService;
-use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
-use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
 use Filip\Bookstore\Data\Repositories\Sql\SqlAuthorRepository;
 use Filip\Bookstore\Data\Repositories\Sql\SqlBookRepository;
 use Filip\Bookstore\Infrastructure\Utility\ServiceRegistry;
 use Filip\Bookstore\Presentation\Controllers\AuthorController;
 use Filip\Bookstore\Presentation\Controllers\BookController;
-use Dotenv\Dotenv;
-use Exception;
 
 /**
  * Class Bootstrap

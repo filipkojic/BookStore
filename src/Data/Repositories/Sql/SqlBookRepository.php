@@ -2,9 +2,9 @@
 
 namespace Filip\Bookstore\Data\Repositories\Sql;
 
-use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
+use Filip\Bookstore\Business\DomainModels\DomainBook;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
 use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
-use Filip\Bookstore\Presentation\Models\Book;
 use PDO;
 
 /**
@@ -19,28 +19,28 @@ class SqlBookRepository implements BookRepositoryInterface
         $stmt = DatabaseConnection::getInstance()->getConnection()->query("SELECT * FROM Books");
         $books = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $books[] = new Book($row['id'], $row['name'], $row['year'], $row['authorId']);
+            $books[] = new DomainBook($row['id'], $row['name'], $row['year'], $row['authorId']);
         }
         return $books;
     }
 
-    public function getById(int $id): ?Book
+    public function getById(int $id): ?DomainBook
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("SELECT * FROM Books WHERE id = :id");
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new Book($row['id'], $row['name'], $row['year'], $row['authorId']) : null;
+        return $row ? new DomainBook($row['id'], $row['name'], $row['year'], $row['authorId']) : null;
     }
 
-    public function create(string $name, int $year, int $authorId): Book
+    public function create(string $name, int $year, int $authorId): DomainBook
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("INSERT INTO Books (name, year, authorId) VALUES (:name, :year, :authorId)");
         $stmt->execute(['name' => $name, 'year' => $year, 'authorId' => $authorId]);
         $id = DatabaseConnection::getInstance()->getConnection()->lastInsertId();
-        return new Book($id, $name, $year, $authorId);
+        return new DomainBook($id, $name, $year, $authorId);
     }
 
-    public function update(int $id, string $name, int $year): ?Book
+    public function update(int $id, string $name, int $year): ?DomainBook
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("UPDATE Books SET name = :name, year = :year WHERE id = :id");
         $stmt->execute(['name' => $name, 'year' => $year, 'id' => $id]);
@@ -59,7 +59,7 @@ class SqlBookRepository implements BookRepositoryInterface
         $stmt->execute(['authorId' => $authorId]);
         $books = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $books[] = new Book($row['id'], $row['name'], $row['year'], $row['authorId']);
+            $books[] = new DomainBook($row['id'], $row['name'], $row['year'], $row['authorId']);
         }
         return $books;
     }

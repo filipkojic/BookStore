@@ -2,9 +2,9 @@
 
 namespace Filip\Bookstore\Data\Repositories\Sql;
 
-use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Business\DomainModels\DomainAuthor;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
 use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
-use Filip\Bookstore\Presentation\Models\Author;
 use PDO;
 
 /**
@@ -22,12 +22,12 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
                                           GROUP BY a.id, a.firstName, a.lastName");
         $authors = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $authors[] = new Author($row['id'], $row['firstName'], $row['lastName'], $row['bookCount']);
+            $authors[] = new DomainAuthor($row['id'], $row['firstName'], $row['lastName'], $row['bookCount']);
         }
         return $authors;
     }
 
-    public function getById(int $id): ?Author
+    public function getById(int $id): ?DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
                                             FROM Authors a
@@ -36,18 +36,18 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
                                             GROUP BY a.id, a.firstName, a.lastName");
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new Author($row['id'], $row['firstName'], $row['lastName'], $row['bookCount']) : null;
+        return $row ? new DomainAuthor($row['id'], $row['firstName'], $row['lastName'], $row['bookCount']) : null;
     }
 
-    public function create(string $firstName, string $lastName): Author
+    public function create(string $firstName, string $lastName): DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("INSERT INTO Authors (firstName, lastName) VALUES (:firstName, :lastName)");
         $stmt->execute(['firstName' => $firstName, 'lastName' => $lastName]);
         $id = DatabaseConnection::getInstance()->getConnection()->lastInsertId();
-        return new Author($id, $firstName, $lastName);
+        return new DomainAuthor($id, $firstName, $lastName);
     }
 
-    public function update(int $id, string $firstName, string $lastName): ?Author
+    public function update(int $id, string $firstName, string $lastName): ?DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("UPDATE Authors SET firstName = :firstName, lastName = :lastName WHERE id = :id");
         $stmt->execute(['firstName' => $firstName, 'lastName' => $lastName, 'id' => $id]);

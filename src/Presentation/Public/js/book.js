@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Creating header
-    const header = createElement('h1', { id: 'head1' }, 'Book List');
+    const header = createElement('h1', { id: 'head1' }, 'DomainBook List');
     container.appendChild(header);
 
     // Creating container2 div
     const container2 = createElement('div', { class: 'container2' });
-    const bookLabel = createElement('div', { class: 'book' }, 'Book');
+    const bookLabel = createElement('div', { class: 'book' }, 'DomainBook');
     const actionsLabel = createElement('div', { class: 'actions' }, 'Actions');
     container2.appendChild(bookLabel);
     container2.appendChild(actionsLabel);
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addBookForm = createElement('div', { id: 'addBookForm', class: 'modal hidden' });
     const addBookFormContent = createElement('div', { class: 'modal-content' });
     addBookFormContent.appendChild(createElement('span', { class: 'close-button', id: 'closeAddBookForm' }, '×'));
-    addBookFormContent.appendChild(createElement('h2', {}, 'Add Book'));
+    addBookFormContent.appendChild(createElement('h2', {}, 'Add DomainBook'));
     addBookFormContent.appendChild(createElement('hr'));
 
     const form = createElement('form');
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteBookDialogContent.appendChild(createElement('span', { class: 'close-button', id: 'closeDeleteBookDialog' }, '×'));
 
     const dialogHeader = createElement('div', { class: 'dialog-header' });
-    dialogHeader.appendChild(createElement('h2', {}, 'Delete Book'));
+    dialogHeader.appendChild(createElement('h2', {}, 'Delete DomainBook'));
     deleteBookDialogContent.appendChild(dialogHeader);
 
     const dialogBody = createElement('div', { class: 'dialog-body' });

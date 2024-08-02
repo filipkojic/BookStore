@@ -2,10 +2,10 @@
 
 namespace Filip\Bookstore\Business\Services;
 
-use Filip\Bookstore\Business\Interfaces\AuthorServiceInterface;
-use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
-use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
-use Filip\Bookstore\Presentation\Models\Author;
+use Filip\Bookstore\Business\DomainModels\DomainAuthor;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\ServiceInterfaces\AuthorServiceInterface;
 
 /**
  * Class AuthorService
@@ -28,7 +28,7 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Get all authors.
      *
-     * @return Author[] Array of Author objects.
+     * @return DomainAuthor[] Array of DomainAuthor objects.
      */
     public function getAllAuthors(): array
     {
@@ -38,10 +38,10 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Get author by ID.
      *
-     * @param int $id Author ID.
-     * @return Author|null Author object or null if not found.
+     * @param int $id DomainAuthor ID.
+     * @return DomainAuthor|null DomainAuthor object or null if not found.
      */
-    public function getAuthorById(int $id): ?Author
+    public function getAuthorById(int $id): ?DomainAuthor
     {
         return $this->authorRepository->getById($id);
     }
@@ -49,11 +49,11 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Add a new author.
      *
-     * @param string $firstName Author's first name.
-     * @param string $lastName Author's last name.
-     * @return Author Newly created Author object.
+     * @param string $firstName DomainAuthor's first name.
+     * @param string $lastName DomainAuthor's last name.
+     * @return DomainAuthor Newly created DomainAuthor object.
      */
-    public function addAuthor(string $firstName, string $lastName): Author
+    public function addAuthor(string $firstName, string $lastName): DomainAuthor
     {
         return $this->authorRepository->create($firstName, $lastName);
     }
@@ -61,12 +61,12 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Update an existing author.
      *
-     * @param int $id Author ID.
-     * @param string $firstName Author's first name.
-     * @param string $lastName Author's last name.
-     * @return Author Updated Author object.
+     * @param int $id DomainAuthor ID.
+     * @param string $firstName DomainAuthor's first name.
+     * @param string $lastName DomainAuthor's last name.
+     * @return DomainAuthor Updated DomainAuthor object.
      */
-    public function updateAuthor(int $id, string $firstName, string $lastName): Author
+    public function updateAuthor(int $id, string $firstName, string $lastName): DomainAuthor
     {
         return $this->authorRepository->update($id, $firstName, $lastName);
     }
@@ -74,7 +74,7 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Delete an author and all their books.
      *
-     * @param int $id Author ID.
+     * @param int $id DomainAuthor ID.
      * @return bool True if deletion was successful, false otherwise.
      */
     public function deleteAuthor(int $id): bool
@@ -90,7 +90,7 @@ class AuthorService implements AuthorServiceInterface
     /**
      * Get the book count for a given author.
      *
-     * @param int $authorId Author ID.
+     * @param int $authorId DomainAuthor ID.
      * @return int Number of books by the given author.
      */
     public function getBookCountByAuthorId(int $authorId): int

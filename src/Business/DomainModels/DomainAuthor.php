@@ -1,16 +1,16 @@
 <?php
 
-namespace Filip\Bookstore\Presentation\Models;
+namespace Filip\Bookstore\Business\DomainModels;
 
 /**
- * Class Author
+ * Class DomainAuthor
  *
  * Represents an author with a first name, last name, and book count.
  */
-class Author extends AbstractEntity
+class DomainAuthor extends AbstractEntity
 {
     /**
-     * Author constructor.
+     * DomainAuthor constructor.
      *
      * @param int $id
      * @param string $firstName

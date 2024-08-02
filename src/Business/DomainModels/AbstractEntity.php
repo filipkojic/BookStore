@@ -1,6 +1,6 @@
 <?php
 
-namespace Filip\Bookstore\Presentation\Models;
+namespace Filip\Bookstore\Business\DomainModels;
 
 abstract class AbstractEntity
 {

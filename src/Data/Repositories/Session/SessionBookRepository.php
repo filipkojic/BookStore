@@ -2,9 +2,9 @@
 
 namespace Filip\Bookstore\Data\Repositories\Session;
 
-use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
+use Filip\Bookstore\Business\DomainModels\DomainBook;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
 use Filip\Bookstore\Infrastructure\Utility\SessionManager;
-use Filip\Bookstore\Presentation\Models\Book;
 
 
 /**
@@ -15,7 +15,7 @@ use Filip\Bookstore\Presentation\Models\Book;
 class SessionBookRepository implements BookRepositoryInterface
 {
     /**
-     * @var Book[] Array of Book objects.
+     * @var DomainBook[] Array of DomainBook objects.
      */
     private array $books;
 
@@ -34,21 +34,21 @@ class SessionBookRepository implements BookRepositoryInterface
 
         if (!$books) {
             $books = [
-                (new Book(1, 'Book Name', 2001, 1))->toArray(),
-                (new Book(2, 'Book Name 2', 2002, 2))->toArray(),
-                (new Book(3, 'Book Name 3', 1997, 3))->toArray(),
-                (new Book(4, 'Book Name 4', 2005, 1))->toArray()
+                (new DomainBook(1, 'DomainBook Name', 2001, 1))->toArray(),
+                (new DomainBook(2, 'DomainBook Name 2', 2002, 2))->toArray(),
+                (new DomainBook(3, 'DomainBook Name 3', 1997, 3))->toArray(),
+                (new DomainBook(4, 'DomainBook Name 4', 2005, 1))->toArray()
             ];
             $this->session->set('books', $books);
         }
 
-        $this->books = Book::fromBatch($books);
+        $this->books = DomainBook::fromBatch($books);
     }
 
     /**
      * Get all books.
      *
-     * @return Book[] Array of Book objects.
+     * @return DomainBook[] Array of DomainBook objects.
      */
     public function getAll(): array
     {
@@ -58,10 +58,10 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Get book by ID.
      *
-     * @param int $id Book ID.
-     * @return Book|null Book object or null if not found.
+     * @param int $id DomainBook ID.
+     * @return DomainBook|null DomainBook object or null if not found.
      */
-    public function getById(int $id): ?Book
+    public function getById(int $id): ?DomainBook
     {
         foreach ($this->books as $book) {
             if ($book->getId() === $id) {
@@ -75,16 +75,16 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Create a new book.
      *
-     * @param string $name Book name.
-     * @param int $year Book year.
-     * @param int $authorId Author ID.
-     * @return Book Newly created Book object.
+     * @param string $name DomainBook name.
+     * @param int $year DomainBook year.
+     * @param int $authorId DomainAuthor ID.
+     * @return DomainBook Newly created DomainBook object.
      */
-    public function create(string $name, int $year, int $authorId): Book
+    public function create(string $name, int $year, int $authorId): DomainBook
     {
         $lastBook = end($this->books);
         $id = $lastBook ? $lastBook->getId() + 1 : 1;
-        $newBook = new Book($id, $name, $year, $authorId);
+        $newBook = new DomainBook($id, $name, $year, $authorId);
         $this->books[] = $newBook;
         $this->updateSession();
 
@@ -94,12 +94,12 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Update an existing book.
      *
-     * @param int $id Book ID.
-     * @param string $name Book name.
-     * @param int $year Book year.
-     * @return Book|null Updated Book object or null if not found.
+     * @param int $id DomainBook ID.
+     * @param string $name DomainBook name.
+     * @param int $year DomainBook year.
+     * @return DomainBook|null Updated DomainBook object or null if not found.
      */
-    public function update(int $id, string $name, int $year): ?Book
+    public function update(int $id, string $name, int $year): ?DomainBook
     {
         foreach ($this->books as $book) {
             if ($book->getId() === $id) {
@@ -116,7 +116,7 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Delete a book.
      *
-     * @param int $id Book ID.
+     * @param int $id DomainBook ID.
      * @return bool True if deletion was successful, false otherwise.
      */
     public function delete(int $id): bool
@@ -135,8 +135,8 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Get books by author ID.
      *
-     * @param int $authorId Author ID.
-     * @return Book[] Array of Book objects by the given author.
+     * @param int $authorId DomainAuthor ID.
+     * @return DomainBook[] Array of DomainBook objects by the given author.
      */
     public function getBooksByAuthorId(int $authorId): array
     {
@@ -153,7 +153,7 @@ class SessionBookRepository implements BookRepositoryInterface
     /**
      * Get the book count by author ID.
      *
-     * @param int $authorId Author ID.
+     * @param int $authorId DomainAuthor ID.
      * @return int Number of books by the given author.
      */
     public function getBookCountByAuthorId(int $authorId): int
@@ -174,7 +174,7 @@ class SessionBookRepository implements BookRepositoryInterface
      */
     private function updateSession(): void
     {
-        $this->session->set('books', array_map(function (Book $book) {
+        $this->session->set('books', array_map(function (DomainBook $book) {
             return $book->toArray();
         }, $this->books));
     }

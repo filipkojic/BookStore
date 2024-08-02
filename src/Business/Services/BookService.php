@@ -1,10 +1,10 @@
 <?php
 
 namespace Filip\Bookstore\Business\Services;
-use Filip\Bookstore\Business\Interfaces\BookServiceInterface;
-use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
-use Filip\Bookstore\Data\Interfaces\BookRepositoryInterface;
-use Filip\Bookstore\Presentation\Models\Book;
+use Filip\Bookstore\Business\DomainModels\DomainBook;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
+use Filip\Bookstore\Business\Interfaces\ServiceInterfaces\BookServiceInterface;
 
 
 /**
@@ -28,7 +28,7 @@ class BookService implements BookServiceInterface
     /**
      * Get all books.
      *
-     * @return Book[] Array of Book objects.
+     * @return DomainBook[] Array of DomainBook objects.
      */
     public function getAllBooks(): array
     {
@@ -38,10 +38,10 @@ class BookService implements BookServiceInterface
     /**
      * Get book by ID.
      *
-     * @param int $id Book ID.
-     * @return Book|null Book object or null if not found.
+     * @param int $id DomainBook ID.
+     * @return DomainBook|null DomainBook object or null if not found.
      */
-    public function getBookById(int $id): ?Book
+    public function getBookById(int $id): ?DomainBook
     {
         return $this->bookRepository->getById($id);
     }
@@ -49,12 +49,12 @@ class BookService implements BookServiceInterface
     /**
      * Add a new book.
      *
-     * @param string $name Book name.
+     * @param string $name DomainBook name.
      * @param int $year Publication year.
-     * @param int $authorId Author ID.
-     * @return Book Newly created Book object.
+     * @param int $authorId DomainAuthor ID.
+     * @return DomainBook Newly created DomainBook object.
      */
-    public function addBook(string $name, int $year, int $authorId): Book
+    public function addBook(string $name, int $year, int $authorId): DomainBook
     {
         $newBook = $this->bookRepository->create($name, $year, $authorId);
 
@@ -64,12 +64,12 @@ class BookService implements BookServiceInterface
     /**
      * Update an existing book.
      *
-     * @param int $id Book ID.
-     * @param string $name Book name.
+     * @param int $id DomainBook ID.
+     * @param string $name DomainBook name.
      * @param int $year Publication year.
-     * @return Book Updated Book object.
+     * @return DomainBook Updated DomainBook object.
      */
-    public function updateBook(int $id, string $name, int $year): Book
+    public function updateBook(int $id, string $name, int $year): DomainBook
     {
         return $this->bookRepository->update($id, $name, $year);
     }
@@ -77,7 +77,7 @@ class BookService implements BookServiceInterface
     /**
      * Delete a book.
      *
-     * @param int $id Book ID.
+     * @param int $id DomainBook ID.
      * @return bool True if deletion was successful, false otherwise.
      */
     public function deleteBook(int $id): bool
@@ -94,8 +94,8 @@ class BookService implements BookServiceInterface
     /**
      * Get books by author ID.
      *
-     * @param int $authorId Author ID.
-     * @return Book[] Array of Book objects.
+     * @param int $authorId DomainAuthor ID.
+     * @return DomainBook[] Array of DomainBook objects.
      */
     public function getBooksByAuthorId(int $authorId): array
     {

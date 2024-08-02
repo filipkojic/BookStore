@@ -2,9 +2,9 @@
 
 namespace Filip\Bookstore\Data\Repositories\Session;
 
-use Filip\Bookstore\Data\Interfaces\AuthorRepositoryInterface;
+use Filip\Bookstore\Business\DomainModels\DomainAuthor;
+use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
 use Filip\Bookstore\Infrastructure\Utility\SessionManager;
-use Filip\Bookstore\Presentation\Models\Author;
 
 
 /**
@@ -15,7 +15,7 @@ use Filip\Bookstore\Presentation\Models\Author;
 class SessionAuthorRepository implements AuthorRepositoryInterface
 {
     /**
-     * @var Author[] Array of Author objects.
+     * @var DomainAuthor[] Array of DomainAuthor objects.
      */
     private $authors;
 
@@ -34,21 +34,21 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
 
         if (!$authors) {
             $authors = [
-                (new Author(1, 'Pera', 'Peric'))->toArray(),
-                (new Author(2, 'Mika', 'Mikic'))->toArray(),
-                (new Author(3, 'Zika', 'Zikic'))->toArray(),
-                (new Author(4, 'Nikola', 'Nikolic'))->toArray()
+                (new DomainAuthor(1, 'Pera', 'Peric'))->toArray(),
+                (new DomainAuthor(2, 'Mika', 'Mikic'))->toArray(),
+                (new DomainAuthor(3, 'Zika', 'Zikic'))->toArray(),
+                (new DomainAuthor(4, 'Nikola', 'Nikolic'))->toArray()
             ];
             $this->session->set('authors', $authors);
         }
 
-        $this->authors = Author::fromBatch($authors);
+        $this->authors = DomainAuthor::fromBatch($authors);
     }
 
     /**
      * Get all authors.
      *
-     * @return Author[] Array of Author objects.
+     * @return DomainAuthor[] Array of DomainAuthor objects.
      */
     public function getAll(): array
     {
@@ -58,10 +58,10 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     /**
      * Get author by ID.
      *
-     * @param int $id Author ID.
-     * @return Author|null Author object or null if not found.
+     * @param int $id DomainAuthor ID.
+     * @return DomainAuthor|null DomainAuthor object or null if not found.
      */
-    public function getById(int $id): ?Author
+    public function getById(int $id): ?DomainAuthor
     {
         foreach ($this->authors as $author) {
             if ($author->getId() === $id) {
@@ -75,15 +75,15 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     /**
      * Create a new author.
      *
-     * @param string $firstName Author's first name.
-     * @param string $lastName Author's last name.
-     * @return Author Newly created Author object.
+     * @param string $firstName DomainAuthor's first name.
+     * @param string $lastName DomainAuthor's last name.
+     * @return DomainAuthor Newly created DomainAuthor object.
      */
-    public function create(string $firstName, string $lastName): Author
+    public function create(string $firstName, string $lastName): DomainAuthor
     {
         $lastAuthor = end($this->authors);
         $id = $lastAuthor ? $lastAuthor->getId() + 1 : 1;
-        $newAuthor = new Author($id, $firstName, $lastName);
+        $newAuthor = new DomainAuthor($id, $firstName, $lastName);
         $this->authors[] = $newAuthor;
         $this->updateSession();
 
@@ -93,12 +93,12 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     /**
      * Update an existing author.
      *
-     * @param int $id Author ID.
-     * @param string $firstName Author's first name.
-     * @param string $lastName Author's last name.
-     * @return Author|null Updated Author object or null if not found.
+     * @param int $id DomainAuthor ID.
+     * @param string $firstName DomainAuthor's first name.
+     * @param string $lastName DomainAuthor's last name.
+     * @return DomainAuthor|null Updated DomainAuthor object or null if not found.
      */
-    public function update(int $id, string $firstName, string $lastName): ?Author
+    public function update(int $id, string $firstName, string $lastName): ?DomainAuthor
     {
         foreach ($this->authors as $author) {
             if ($author->getId() === $id) {
@@ -115,7 +115,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
     /**
      * Delete an author.
      *
-     * @param int $id Author ID.
+     * @param int $id DomainAuthor ID.
      * @return bool True if deletion was successful, false otherwise.
      */
     public function delete(int $id): bool
@@ -136,7 +136,7 @@ class SessionAuthorRepository implements AuthorRepositoryInterface
      */
     private function updateSession(): void
     {
-        $this->session->set('authors', array_map(function (Author $author) {
+        $this->session->set('authors', array_map(function (DomainAuthor $author) {
             return $author->toArray();
         }, $this->authors));
     }

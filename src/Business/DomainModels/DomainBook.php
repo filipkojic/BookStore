@@ -1,16 +1,16 @@
 <?php
 
-namespace Filip\Bookstore\Presentation\Models;
+namespace Filip\Bookstore\Business\DomainModels;
 
 /**
- * Class Book
+ * Class DomainBook
  *
  * Represents a book with a name, publication year, and author ID.
  */
-class Book extends AbstractEntity
+class DomainBook extends AbstractEntity
 {
     /**
-     * Book constructor.
+     * DomainBook constructor.
      *
      * @param int $id
      * @param string $name
