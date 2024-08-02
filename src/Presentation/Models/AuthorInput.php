@@ -2,23 +2,36 @@
 
 namespace Filip\Bookstore\Presentation\Models;
 
+/**
+ * Class AuthorInput
+ *
+ * Validates the input data for authors.
+ */
 class AuthorInput
 {
-    private ?int $id;
     private string $firstName;
     private string $lastName;
-    private int $bookCount = 0;
 
-    public function __construct(?int $id, string $firstName, string $lastName, int $bookCount = 0)
+    /**
+     * AuthorInput constructor.
+     *
+     * @param string $firstName
+     * @param string $lastName
+     * @throws \Exception
+     */
+    public function __construct(string $firstName, string $lastName)
     {
-        $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->bookCount = $bookCount;
 
         $this->validate();
     }
 
+    /**
+     * Validates the input data.
+     *
+     * @throws \Exception if validation fails
+     */
     private function validate(): void
     {
         $errors = [];
@@ -40,23 +53,19 @@ class AuthorInput
         }
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    /**
+     * @return string
+     */
     public function getFirstName(): string
     {
         return $this->firstName;
     }
 
+    /**
+     * @return string
+     */
     public function getLastName(): string
     {
         return $this->lastName;
-    }
-
-    public function getBookCount(): int
-    {
-        return $this->bookCount;
     }
 }

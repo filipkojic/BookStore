@@ -8,15 +8,31 @@ use Filip\Bookstore\Infrastructure\HTTP\Response\HtmlResponse;
 use Filip\Bookstore\Presentation\Models\AuthorInput;
 use Exception;
 
-class AuthorController {
-
+/**
+ * Class AuthorController
+ *
+ * Handles author-related operations.
+ */
+class AuthorController
+{
     private AuthorService $authorService;
 
+    /**
+     * AuthorController constructor.
+     *
+     * @param AuthorService $authorService
+     */
     public function __construct(AuthorService $authorService)
     {
         $this->authorService = $authorService;
     }
 
+    /**
+     * Displays a list of all authors.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function index(HttpRequest $request): HtmlResponse
     {
         $authors = $this->authorService->getAllAuthors();
@@ -28,6 +44,12 @@ class AuthorController {
         return HtmlResponse::fromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
     }
 
+    /**
+     * Creates a new author.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function create(HttpRequest $request): HtmlResponse
     {
         $firstNameError = $lastNameError = "";
@@ -36,7 +58,6 @@ class AuthorController {
         if ($request->getMethod() === "POST") {
             try {
                 $authorInput = new AuthorInput(
-                    null,
                     $request->getBodyParam("firstName"),
                     $request->getBodyParam("lastName")
                 );
@@ -62,6 +83,12 @@ class AuthorController {
         ]);
     }
 
+    /**
+     * Edits an existing author.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function edit(HttpRequest $request): HtmlResponse
     {
         $id = $request->getId();
@@ -73,10 +100,8 @@ class AuthorController {
         if ($request->getMethod() === "POST") {
             try {
                 $authorInput = new AuthorInput(
-                    $id,
                     $request->getBodyParam("firstName"),
-                    $request->getBodyParam("lastName"),
-                    $author->getBookCount()
+                    $request->getBodyParam("lastName")
                 );
 
                 $this->authorService->updateAuthor($id, $authorInput->getFirstName(), $authorInput->getLastName());
@@ -101,6 +126,12 @@ class AuthorController {
         ]);
     }
 
+    /**
+     * Deletes an author.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function delete(HttpRequest $request): HtmlResponse
     {
         $id = $request->getId();

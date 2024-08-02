@@ -2,23 +2,36 @@
 
 namespace Filip\Bookstore\Presentation\Models;
 
+/**
+ * Class BookInput
+ *
+ * Validates the input data for books.
+ */
 class BookInput
 {
-    private ?int $id;
     private string $name;
     private int $year;
-    private int $authorId;
 
-    public function __construct(?int $id, string $name, $year, int $authorId)
+    /**
+     * BookInput constructor.
+     *
+     * @param string $name
+     * @param int|string $year
+     * @throws \Exception
+     */
+    public function __construct(string $name, $year)
     {
-        $this->id = $id;
         $this->name = $name;
         $this->year = is_numeric($year) ? (int)$year : 0;
-        $this->authorId = $authorId;
 
         $this->validate();
     }
 
+    /**
+     * Validates the input data.
+     *
+     * @throws \Exception if validation fails
+     */
     private function validate(): void
     {
         $errors = [];
@@ -38,23 +51,19 @@ class BookInput
         }
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @return int
+     */
     public function getYear(): int
     {
         return $this->year;
-    }
-
-    public function getAuthorId(): int
-    {
-        return $this->authorId;
     }
 }

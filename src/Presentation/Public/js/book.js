@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Creating header
-    const header = createElement('h1', { id: 'head1' }, 'DomainBook List');
+    const header = createElement('h1', { id: 'head1' }, 'Book List');
     container.appendChild(header);
 
     // Creating container2 div
     const container2 = createElement('div', { class: 'container2' });
-    const bookLabel = createElement('div', { class: 'book' }, 'DomainBook');
+    const bookLabel = createElement('div', { class: 'book' }, 'Book');
     const actionsLabel = createElement('div', { class: 'actions' }, 'Actions');
     container2.appendChild(bookLabel);
     container2.appendChild(actionsLabel);

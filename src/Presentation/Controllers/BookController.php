@@ -9,15 +9,31 @@ use Filip\Bookstore\Infrastructure\HTTP\Response\JsonResponse;
 use Filip\Bookstore\Presentation\Models\BookInput;
 use Exception;
 
-class BookController {
-
+/**
+ * Class BookController
+ *
+ * Handles book-related operations.
+ */
+class BookController
+{
     private BookService $bookService;
 
+    /**
+     * BookController constructor.
+     *
+     * @param BookService $bookService
+     */
     public function __construct(BookService $bookService)
     {
         $this->bookService = $bookService;
     }
 
+    /**
+     * Displays a list of all books.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function index(HttpRequest $request): HtmlResponse
     {
         $books = $this->bookService->getAllBooks();
@@ -25,6 +41,12 @@ class BookController {
         return HtmlResponse::fromView(__DIR__ . '/../Views/bookList.php', ['books' => $books]);
     }
 
+    /**
+     * Displays a list of books by author ID.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function getBooksByAuthor(HttpRequest $request): HtmlResponse
     {
         $authorId = $request->getId();
@@ -33,6 +55,12 @@ class BookController {
         return HtmlResponse::fromView(__DIR__ . '/../Views/bookList.php', ['books' => $books, 'authorId' => $authorId]);
     }
 
+    /**
+     * Edits an existing book.
+     *
+     * @param HttpRequest $request
+     * @return HtmlResponse
+     */
     public function edit(HttpRequest $request): HtmlResponse
     {
         $id = $request->getId();
@@ -45,10 +73,8 @@ class BookController {
         if ($request->getMethod() == "POST") {
             try {
                 $bookInput = new BookInput(
-                    $id,
                     $request->getBodyParam("name"),
-                    $request->getBodyParam("year"),
-                    $authorId
+                    $request->getBodyParam("year")
                 );
 
                 $this->bookService->updateBook($id, $bookInput->getName(), $bookInput->getYear());
@@ -74,12 +100,18 @@ class BookController {
         ]);
     }
 
+    /**
+     * Returns a list of books by author ID as a JSON response.
+     *
+     * @param HttpRequest $request
+     * @return JsonResponse
+     */
     public function getBooksForAuthor(HttpRequest $request): JsonResponse
     {
         $authorId = $request->getId();
         $books = $this->bookService->getBooksByAuthorId($authorId);
 
-        $bookData = array_map(function($book) {
+        $bookData = array_map(function ($book) {
             return [
                 'id' => $book->getId(),
                 'title' => $book->getName(),
@@ -90,19 +122,23 @@ class BookController {
         return new JsonResponse(200, [], ['books' => $bookData]);
     }
 
+    /**
+     * Adds a new book.
+     *
+     * @param HttpRequest $request
+     * @return JsonResponse
+     */
     public function addBook(HttpRequest $request): JsonResponse
     {
         $data = $request->getJsonBody();
 
         try {
             $bookInput = new BookInput(
-                null,
                 $data['title'] ?? '',
-                $data['year'] ?? 0,
-                $data['authorId'] ?? 0
+                $data['year'] ?? 0
             );
 
-            $book = $this->bookService->addBook($bookInput->getName(), $bookInput->getYear(), $bookInput->getAuthorId());
+            $book = $this->bookService->addBook($bookInput->getName(), $bookInput->getYear(), $data['authorId']);
 
             $bookData = [
                 'id' => $book->getId(),
@@ -117,6 +153,12 @@ class BookController {
         }
     }
 
+    /**
+     * Deletes a book.
+     *
+     * @param HttpRequest $request
+     * @return JsonResponse
+     */
     public function deleteBook(HttpRequest $request): JsonResponse
     {
         $bookId = $request->getId();
