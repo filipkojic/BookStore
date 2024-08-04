@@ -41,7 +41,13 @@ class AuthorController
             $author->setBookCount($bookCount);
         }
 
-        return HtmlResponse::fromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors]);
+        $headers = [
+            "Cache-Control" => "no-cache, no-store, must-revalidate",
+            "Pragma" => "no-cache",
+            "Expires" => "0"
+        ];
+
+        return HtmlResponse::fromView(__DIR__ . '/../Views/authorList.php', ['authors' => $authors], 200, $headers);
     }
 
     /**
