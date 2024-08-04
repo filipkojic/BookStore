@@ -53,23 +53,22 @@ class AuthorController
     public function create(HttpRequest $request): HtmlResponse
     {
         $firstNameError = $lastNameError = "";
-        $firstName = $lastName = "";
+        $firstName = $request->getBodyParam("firstName");
+        $lastName = $request->getBodyParam("lastName");
 
         if ($request->getMethod() === "POST") {
             try {
-                $authorInput = new AuthorInput(
-                    $request->getBodyParam("firstName"),
-                    $request->getBodyParam("lastName")
-                );
-
+                $authorInput = new AuthorInput($firstName, $lastName);
                 $this->authorService->addAuthor($authorInput->getFirstName(), $authorInput->getLastName());
                 return new HtmlResponse(302, ['Location' => '/index.php']);
             } catch (Exception $e) {
                 $errors = json_decode($e->getMessage(), true);
                 if (isset($errors['firstName'])) {
+                    $firstName = '';
                     $firstNameError = $errors['firstName'];
                 }
                 if (isset($errors['lastName'])) {
+                    $lastName = '';
                     $lastNameError = $errors['lastName'];
                 }
             }
@@ -78,10 +77,11 @@ class AuthorController
         return HtmlResponse::fromView(__DIR__ . '/../Views/addAuthor.php', [
             'firstNameError' => $firstNameError,
             'lastNameError' => $lastNameError,
-            'firstName' => $firstName,
-            'lastName' => $lastName
+            'firstName' => htmlspecialchars($firstName),
+            'lastName' => htmlspecialchars($lastName)
         ]);
     }
+
 
     /**
      * Edits an existing author.
@@ -98,20 +98,21 @@ class AuthorController
         $lastName = $author->getLastName();
 
         if ($request->getMethod() === "POST") {
-            try {
-                $authorInput = new AuthorInput(
-                    $request->getBodyParam("firstName"),
-                    $request->getBodyParam("lastName")
-                );
+            $firstName = $request->getBodyParam("firstName");
+            $lastName = $request->getBodyParam("lastName");
 
+            try {
+                $authorInput = new AuthorInput($firstName, $lastName);
                 $this->authorService->updateAuthor($id, $authorInput->getFirstName(), $authorInput->getLastName());
                 return new HtmlResponse(302, ['Location' => '/authorList.php']);
             } catch (Exception $e) {
                 $errors = json_decode($e->getMessage(), true);
                 if (isset($errors['firstName'])) {
+                    $firstName = '';
                     $firstNameError = $errors['firstName'];
                 }
                 if (isset($errors['lastName'])) {
+                    $lastName = '';
                     $lastNameError = $errors['lastName'];
                 }
             }
@@ -121,10 +122,11 @@ class AuthorController
             'author' => $author,
             'firstNameError' => $firstNameError,
             'lastNameError' => $lastNameError,
-            'firstName' => $firstName,
-            'lastName' => $lastName
+            'firstName' => htmlspecialchars($firstName),
+            'lastName' => htmlspecialchars($lastName)
         ]);
     }
+
 
     /**
      * Deletes an author.

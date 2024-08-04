@@ -71,20 +71,21 @@ class BookController
         $authorId = $book->getAuthorId();
 
         if ($request->getMethod() == "POST") {
-            try {
-                $bookInput = new BookInput(
-                    $request->getBodyParam("name"),
-                    $request->getBodyParam("year")
-                );
+            $name = $request->getBodyParam("name");
+            $year = $request->getBodyParam("year");
 
+            try {
+                $bookInput = new BookInput($name, $year);
                 $this->bookService->updateBook($id, $bookInput->getName(), $bookInput->getYear());
                 return new HtmlResponse(302, ['Location' => '/books/' . $authorId]);
             } catch (Exception $e) {
                 $errors = json_decode($e->getMessage(), true);
                 if (isset($errors['name'])) {
+                    $name = '';
                     $nameError = $errors['name'];
                 }
                 if (isset($errors['year'])) {
+                    $year = '';
                     $yearError = $errors['year'];
                 }
             }
@@ -93,12 +94,13 @@ class BookController
         return HtmlResponse::fromView(__DIR__ . '/../Views/editBook.php', [
             'nameError' => $nameError,
             'yearError' => $yearError,
-            'name' => $name,
-            'year' => $year,
+            'name' => htmlspecialchars($name),
+            'year' => htmlspecialchars($year),
             'authorId' => $authorId,
             'book' => $book
         ]);
     }
+
 
     /**
      * Returns a list of books by author ID as a JSON response.
