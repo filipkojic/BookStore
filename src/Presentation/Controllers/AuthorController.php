@@ -80,13 +80,18 @@ class AuthorController
             }
         }
 
+        // Osigurajte da su vrijednosti niske prije prosljeđivanja u htmlspecialchars()
+        $firstName = htmlspecialchars($firstName ?? '', ENT_QUOTES, 'UTF-8');
+        $lastName = htmlspecialchars($lastName ?? '', ENT_QUOTES, 'UTF-8');
+
         return HtmlResponse::fromView(__DIR__ . '/../Views/addAuthor.php', [
             'firstNameError' => $firstNameError,
             'lastNameError' => $lastNameError,
-            'firstName' => htmlspecialchars($firstName),
-            'lastName' => htmlspecialchars($lastName)
+            'firstName' => $firstName,
+            'lastName' => $lastName
         ]);
     }
+
 
 
     /**

@@ -13,7 +13,7 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
 
     ```bash
     git clone git@github.com:filipkojic/BookStore.git
-    cd bookstore
+    cd BookStore
     ```
 
 2. Create a `.env` file in the root directory with the following content:
@@ -26,12 +26,12 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
     DB_PASSWORD=123
     ```
 
-**Note:** You can change `DB_DATABASE` and `DB_PASSWORD` to fit your requirements, but `DB_USERNAME` should remain as `root` unless you plan to create additional users in the MySQL container.
+   **Note:** You can change `DB_DATABASE` and `DB_PASSWORD` to fit your requirements, but `DB_USERNAME` should remain as `root` unless you plan to create additional users in the MySQL container.
 
 3. Pull the Docker image from Docker Hub:
 
     ```bash
-    docker pull filipkojic99/bookstore_app:latest
+    docker pull filipkojic99/bookstore_app_v2:v3
     ```
 
 4. Update the `docker-compose.yml` file to use the pulled image:
@@ -41,7 +41,7 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
 
     services:
       app:
-        image: filipkojic99/bookstore_app:latest
+        image: filipkojic99/bookstore_app_v2:v3
         ports:
           - "8081:80"
         depends_on:
@@ -53,6 +53,7 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
           - DB_USERNAME=${DB_USERNAME}
           - DB_PASSWORD=${DB_PASSWORD}
         volumes:
+          - /var/www/html/vendor
           - .:/var/www/html
 
       db:
