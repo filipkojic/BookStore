@@ -7,13 +7,15 @@ namespace Filip\Bookstore\Infrastructure\Utility;
  *
  * Singleton class to manage PHP sessions.
  */
-class SessionManager extends Singleton {
+class SessionManager extends Singleton
+{
     /**
      * SessionManager constructor.
      *
      * Starts the session if it is not already started.
      */
-    protected function __construct() {
+    protected function __construct()
+    {
         parent::__construct();
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -26,7 +28,8 @@ class SessionManager extends Singleton {
      * @param string $key The key to retrieve.
      * @return mixed|null The value associated with the key, or null if not set.
      */
-    public function get(string $key) {
+    public function get(string $key)
+    {
         return GlobalWrapper::getSessionValue($key);
     }
 
@@ -36,7 +39,8 @@ class SessionManager extends Singleton {
      * @param string $key The key to set.
      * @param mixed $value The value to set.
      */
-    public function set(string $key, $value): void {
+    public function set(string $key, $value): void
+    {
         GlobalWrapper::setSessionValue($key, $value);
     }
 
@@ -45,14 +49,16 @@ class SessionManager extends Singleton {
      *
      * @param string $key The key to unset.
      */
-    public function unset(string $key): void {
+    public function unset(string $key): void
+    {
         GlobalWrapper::unsetSessionValue($key);
     }
 
     /**
      * Destroy the session.
      */
-    public function destroy(): void {
+    public function destroy(): void
+    {
         GlobalWrapper::destroySession();
         self::$instances[static::class] = null;
     }

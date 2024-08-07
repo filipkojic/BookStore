@@ -18,11 +18,13 @@ class DomainBook extends AbstractEntity
      * @param int $authorId
      */
     public function __construct(
-        private int $id,
+        private int    $id,
         private string $name,
-        private int $year,
-        private int $authorId
-    ) {}
+        private int    $year,
+        private int    $authorId
+    )
+    {
+    }
 
     /**
      * @return int

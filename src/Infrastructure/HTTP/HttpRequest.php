@@ -17,12 +17,13 @@ class HttpRequest
      * Initializes the request parameters from the global PHP variables.
      */
     public function __construct(
-        private array $queryParams = [],
-        public array $bodyParams = [],
-        private array $headers = [],
+        private array  $queryParams = [],
+        public array   $bodyParams = [],
+        private array  $headers = [],
         private string $method = '',
         private string $uri = ''
-    ) {
+    )
+    {
         try {
             $this->queryParams = GlobalWrapper::getGlobal('_GET');
             $this->bodyParams = GlobalWrapper::getGlobal('_POST');

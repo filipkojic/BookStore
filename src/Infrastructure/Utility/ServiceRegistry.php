@@ -9,7 +9,8 @@ use Exception;
  *
  * Singleton class that implements the Service Registry design pattern.
  */
-class ServiceRegistry extends Singleton {
+class ServiceRegistry extends Singleton
+{
     /**
      * @var array An associative array holding the registered services.
      */
@@ -21,7 +22,8 @@ class ServiceRegistry extends Singleton {
      * @param string $key The key to identify the service.
      * @param mixed $service The service to register.
      */
-    public function register(string $key, $service): void {
+    public function register(string $key, $service): void
+    {
         $this->services[$key] = $service;
     }
 
@@ -32,7 +34,8 @@ class ServiceRegistry extends Singleton {
      * @return mixed The registered service.
      * @throws Exception If the service is not found.
      */
-    public function get(string $key) {
+    public function get(string $key)
+    {
         if (!isset($this->services[$key])) {
             throw new Exception("Service not found: " . $key);
         }

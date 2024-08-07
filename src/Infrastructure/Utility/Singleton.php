@@ -8,7 +8,8 @@ namespace Filip\Bookstore\Infrastructure\Utility;
  * Provides a base class for implementing the Singleton design pattern.
  * Ensures that only one instance of the class exists throughout the application.
  */
-abstract class Singleton {
+abstract class Singleton
+{
     /**
      * @var array Stores instances of the Singleton subclasses.
      */
@@ -17,14 +18,17 @@ abstract class Singleton {
     /**
      * Protected constructor to prevent creating a new instance of the class via the 'new' operator.
      */
-    protected function __construct() {}
+    protected function __construct()
+    {
+    }
 
     /**
      * Get the single instance of the class.
      *
      * @return static The single instance of the called class.
      */
-    public static function getInstance(): static {
+    public static function getInstance(): static
+    {
         $class = static::class;
         if (!isset(static::$instances[$class])) {
             static::$instances[$class] = new static();

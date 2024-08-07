@@ -17,9 +17,11 @@ abstract class HttpResponse
      * @param array $headers Headers to be sent with the response.
      */
     public function __construct(
-        protected int $statusCode = 200,
+        protected int   $statusCode = 200,
         protected array $headers = []
-    ) {}
+    )
+    {
+    }
 
     /**
      * Add a header to the response.

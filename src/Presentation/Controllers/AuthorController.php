@@ -93,7 +93,6 @@ class AuthorController
     }
 
 
-
     /**
      * Edits an existing author.
      *

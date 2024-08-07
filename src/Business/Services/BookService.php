@@ -1,6 +1,7 @@
 <?php
 
 namespace Filip\Bookstore\Business\Services;
+
 use Filip\Bookstore\Business\DomainModels\DomainBook;
 use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\AuthorRepositoryInterface;
 use Filip\Bookstore\Business\Interfaces\RepositoryInterfaces\BookRepositoryInterface;
@@ -21,9 +22,11 @@ class BookService implements BookServiceInterface
      * @param AuthorRepositoryInterface $authorRepository
      */
     public function __construct(
-        private BookRepositoryInterface $bookRepository,
+        private BookRepositoryInterface   $bookRepository,
         private AuthorRepositoryInterface $authorRepository
-    ) {}
+    )
+    {
+    }
 
     /**
      * Get all books.

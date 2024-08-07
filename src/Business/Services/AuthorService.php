@@ -22,8 +22,10 @@ class AuthorService implements AuthorServiceInterface
      */
     public function __construct(
         private AuthorRepositoryInterface $authorRepository,
-        private BookRepositoryInterface $bookRepository
-    ) {}
+        private BookRepositoryInterface   $bookRepository
+    )
+    {
+    }
 
     /**
      * Get all authors.
