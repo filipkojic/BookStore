@@ -31,7 +31,7 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
 3. Pull the Docker image from Docker Hub:
 
     ```bash
-    docker pull filipkojic99/bookstore_app_v2:v3
+    docker pull filipkojic99/bookstore_app_v2:latest
     ```
 
 4. Update the `docker-compose.yml` file to use the pulled image:
@@ -41,7 +41,7 @@ This is a demo application for a bookstore, built with PHP and MySQL, and contai
 
     services:
       app:
-        image: filipkojic99/bookstore_app_v2:v3
+        image: filipkojic99/bookstore_app_v2:latest
         ports:
           - "8081:80"
         depends_on:
