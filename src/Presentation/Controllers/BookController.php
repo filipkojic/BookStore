@@ -16,6 +16,9 @@ use Exception;
  */
 class BookController
 {
+    /**
+     * @var BookService
+     */
     private BookService $bookService;
 
     /**

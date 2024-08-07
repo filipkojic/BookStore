@@ -11,7 +11,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 try {
     Bootstrap::initialize();
 } catch (Exception $e) {
-    // Handle the initialization error, log it, or display a user-friendly message
     error_log("Error during Bootstrap initialization: " . $e->getMessage());
     echo "An error occurred during initialization. Please try again later.";
     exit;

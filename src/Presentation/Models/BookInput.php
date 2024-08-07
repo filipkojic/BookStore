@@ -9,7 +9,14 @@ namespace Filip\Bookstore\Presentation\Models;
  */
 class BookInput
 {
+    /**
+     * @var string
+     */
     private string $name;
+
+    /**
+     * @var int
+     */
     private int $year;
 
     /**

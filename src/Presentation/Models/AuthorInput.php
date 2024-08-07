@@ -9,7 +9,14 @@ namespace Filip\Bookstore\Presentation\Models;
  */
 class AuthorInput
 {
+    /**
+     * @var string
+     */
     private string $firstName;
+
+    /**
+     * @var string
+     */
     private string $lastName;
 
     /**

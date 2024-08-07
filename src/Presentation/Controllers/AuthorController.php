@@ -15,6 +15,9 @@ use Exception;
  */
 class AuthorController
 {
+    /**
+     * @var AuthorService
+     */
     private AuthorService $authorService;
 
     /**
@@ -36,10 +39,6 @@ class AuthorController
     public function index(HttpRequest $request): HtmlResponse
     {
         $authors = $this->authorService->getAllAuthors();
-        foreach ($authors as $author) {
-            $bookCount = $this->authorService->getBookCountByAuthorId($author->getId());
-            $author->setBookCount($bookCount);
-        }
 
         $headers = [
             "Cache-Control" => "no-cache, no-store, must-revalidate",
@@ -80,7 +79,6 @@ class AuthorController
             }
         }
 
-        // Osigurajte da su vrijednosti niske prije prosljeđivanja u htmlspecialchars()
         $firstName = htmlspecialchars($firstName ?? '', ENT_QUOTES, 'UTF-8');
         $lastName = htmlspecialchars($lastName ?? '', ENT_QUOTES, 'UTF-8');
 

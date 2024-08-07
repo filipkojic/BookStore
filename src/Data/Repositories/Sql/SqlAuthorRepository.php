@@ -8,12 +8,17 @@ use Filip\Bookstore\Infrastructure\Utility\DatabaseConnection;
 use PDO;
 
 /**
- * Class SQLAuthorRepository
+ * Class SqlAuthorRepository
  *
  * This class implements the AuthorRepositoryInterface interface using SQL database storage.
  */
 class SqlAuthorRepository implements AuthorRepositoryInterface
 {
+    /**
+     * Get all authors with the number of books they have written.
+     *
+     * @return DomainAuthor[] An array of DomainAuthor objects.
+     */
     public function getAll(): array
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->query("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
@@ -27,6 +32,12 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
         return $authors;
     }
 
+    /**
+     * Get an author by their ID.
+     *
+     * @param int $id The ID of the author.
+     * @return DomainAuthor|null The DomainAuthor object if found, null otherwise.
+     */
     public function getById(int $id): ?DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("SELECT a.id, a.firstName, a.lastName, COUNT(b.id) as bookCount
@@ -39,6 +50,13 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
         return $row ? new DomainAuthor($row['id'], $row['firstName'], $row['lastName'], $row['bookCount']) : null;
     }
 
+    /**
+     * Create a new author.
+     *
+     * @param string $firstName The first name of the author.
+     * @param string $lastName The last name of the author.
+     * @return DomainAuthor The newly created DomainAuthor object.
+     */
     public function create(string $firstName, string $lastName): DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("INSERT INTO Authors (firstName, lastName) VALUES (:firstName, :lastName)");
@@ -47,6 +65,14 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
         return new DomainAuthor($id, $firstName, $lastName);
     }
 
+    /**
+     * Update an existing author.
+     *
+     * @param int $id The ID of the author to update.
+     * @param string $firstName The new first name of the author.
+     * @param string $lastName The new last name of the author.
+     * @return DomainAuthor|null The updated DomainAuthor object if found, null otherwise.
+     */
     public function update(int $id, string $firstName, string $lastName): ?DomainAuthor
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("UPDATE Authors SET firstName = :firstName, lastName = :lastName WHERE id = :id");
@@ -54,6 +80,12 @@ class SqlAuthorRepository implements AuthorRepositoryInterface
         return $this->getById($id);
     }
 
+    /**
+     * Delete an author by their ID.
+     *
+     * @param int $id The ID of the author to delete.
+     * @return bool True on success, false on failure.
+     */
     public function delete(int $id): bool
     {
         $stmt = DatabaseConnection::getInstance()->getConnection()->prepare("DELETE FROM Authors WHERE id = :id");
