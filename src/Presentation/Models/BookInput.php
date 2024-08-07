@@ -42,8 +42,8 @@ class BookInput
             $errors['name'] = "Name must be less than 250 characters.";
         }
 
-        if ($this->year <= 0) {
-            $errors['year'] = "Year must be a positive number.";
+        if ($this->year == 0 || $this->year < -5000 || $this->year > 999999) {
+            $errors['year'] = "Year must be between -5000 and 999999, and cannot be 0.";
         }
 
         if (!empty($errors)) {
