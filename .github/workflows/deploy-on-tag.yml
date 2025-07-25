@@ -17,4 +17,4 @@ jobs:
 
       - name: Run Deployment
         run: |
-          echo "Ovde bi išao tvoj deployment korak - test tag grana"
+          echo "Ovde bi išao tvoj deployment korak - test MAIN grana"
