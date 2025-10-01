@@ -1,17 +1,15 @@
 name: Test Release Upload
-
 on:
-  push:   # okida se na svaki push
+  push
 
 permissions:
-  contents: write   # neophodno da bi upload radio
+  contents: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Create dummy zip
         run: |
@@ -19,20 +17,12 @@ jobs:
           echo "Hello release test" > artifact/hello.txt
           zip -r artifact.zip artifact
 
-      - name: Create Release
-        id: create_release
+      - name: Create/Update Release and Upload Asset
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "3.3.3"                # fiksni tag
-          name: "Test Release 3.3.3"
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
-        with:
+          tag_name: "3.3.4"                 # ← OVDE JE TAG
+          name: "Test Release 3.3.4"
           files: artifact.zip
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
