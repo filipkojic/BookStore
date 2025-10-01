@@ -3,6 +3,9 @@ name: Test Release Upload
 on:
   push:   # okida se na svaki push
 
+permissions:
+  contents: write   # neophodno da bi upload radio
+
 jobs:
   release:
     runs-on: ubuntu-latest
