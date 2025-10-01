@@ -17,8 +17,8 @@ jobs:
       - name: Create/Update Release and Upload Asset
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: "3.3.4"                 # ← OVDE JE TAG
-          name: "Test Release 3.3.4"
+          tag_name: "3.3.6"                 # ← OVDE JE TAG
+          name: "Test Release 3.3.6"
           files: artifact.zip
           fail_on_unmatched_files: false
         env:
