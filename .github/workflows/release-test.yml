@@ -2,6 +2,9 @@ name: Test Release Upload
 on:
   push
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
