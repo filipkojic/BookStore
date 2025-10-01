@@ -17,12 +17,16 @@ jobs:
           echo "Hello release test" > artifact/hello.txt
           zip -r artifact.zip artifact
 
-      - name: Create/Update Release and Upload Asset
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: "3.3.6"                 # ← OVDE JE TAG
-          name: "Test Release 3.3.6"
-          files: artifact.zip
-          fail_on_unmatched_files: false
+      - name: Ensure Release Exists
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Ako release/tag ne postoji, kreira ga
+          if ! gh release view "4.4.2" &>/dev/null; then
+            gh release create "4.4.2" -t "Test Release 4.4.2" -n "Release za testiranje GitHub CLI"
+          fi
+
+      - name: Upload asset with gh CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "4.4.2" artifact.zip --clobber
