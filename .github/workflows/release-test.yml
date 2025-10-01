@@ -23,8 +23,8 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: test-release-${{ github.run_id }}
-          name: "Test Release ${{ github.run_id }}"
+          tag_name: "3.3.3"                # fiksni tag
+          name: "Test Release 3.3.3"
           draft: false
           prerelease: false
         env:
